@@ -21,23 +21,23 @@ public class Epic extends Task {
     }
 
     public void checkEpicStatus () {
-        boolean epicDone = false;
-        boolean epicNew = false;
+        int epicDone = 0;
+        int epicNew = 0;
         for(Subtask currentSubtask : this.subtasks) {
             if(currentSubtask.status == Status.DONE) {
-                epicDone = true;
+                epicDone++;
             }
         }
         for(Subtask currentSubtask : this.subtasks) {
             if(currentSubtask.status == Status.NEW) {
-                epicNew = true;
+                epicNew++;
             }
         }
-        if (epicDone || epicNew || this.subtasks.size() == 0){
-            if (epicDone) {
+        if (epicDone == this.subtasks.size() || epicNew == this.subtasks.size() || this.subtasks.size() == 0){
+            if (epicDone == this.subtasks.size()) {
                 this.setStatus(Status.DONE);
             }
-            if (epicNew || this.subtasks.size() == 0) {
+            if (epicNew == this.subtasks.size() || this.subtasks.size() == 0) {
                 this.setStatus(Status.NEW);
             }
         } else {
