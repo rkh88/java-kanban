@@ -1,0 +1,107 @@
+import java.util.ArrayList;
+import java.util.HashMap;
+
+public class TaskManager {
+
+    protected HashMap<Integer, Task> allTasks;
+    protected HashMap<Integer, Subtask> allSubtasks;
+    protected HashMap<Integer, Epic> allEpics;
+    protected int counter = 1;
+
+    public HashMap<Integer, Task> getAllTasks() {
+        return allTasks;
+    }
+
+    public HashMap<Integer, Subtask> getAllSubtasks() {
+        return allSubtasks;
+    }
+
+    public HashMap<Integer, Epic> getAllEpics() {
+        return allEpics;
+    }
+
+    public TaskManager() {
+        this.allTasks = new HashMap<>();
+        this.allSubtasks = new HashMap<>();
+        this.allEpics = new HashMap<>();
+    }
+
+    public void deleteAllTasks() {
+        this.getAllTasks().clear();
+
+
+    }
+
+    public void deleteAllEpics() {
+        this.getAllEpics().clear();
+    }
+
+    public void deleteAllSubtasks() {
+        this.getAllSubtasks().clear();
+    }
+
+    public Task getTaskById(int id) {
+        return this.getAllTasks().get(id);
+    }
+
+    public Task getSubtaskById(int id) {
+        return this.getAllSubtasks().get(id);
+    }
+
+    public Task getEpicById(int id) {
+        return this.getAllEpics().get(id);
+    }
+
+    public Task createTask(String name, String description) {
+        Task task = new Task(name, description, counter);
+        this.getAllTasks().put(counter, task);
+        counter++;
+        return task;
+    }
+
+    public Epic createEpic(String name, String description) {
+        Epic epic = new Epic(name, description, counter);
+        this.getAllEpics().put(counter, epic);
+        counter++;
+        return epic;
+    }
+
+    public Subtask createSubtask(String name, String description, Status status, Epic epic) {
+        Subtask subtask = new Subtask(name, description, counter, status, epic);
+        this.getAllSubtasks().put(counter, subtask);
+        epic.addSubtask(subtask);
+        epic.checkEpicStatus();
+        counter++;
+        return subtask;
+    }
+
+    public void updateTask(Task task) {
+        this.getAllTasks().put(task.id, task);
+    }
+
+    public void updateSubtask(Subtask subtask) {
+        this.getAllSubtasks().put(subtask.id, subtask);
+        this.getAllSubtasks().get(subtask.id).epic.checkEpicStatus();
+    }
+
+    public void updateEpic(Epic epic) {
+        this.getAllEpics().put(epic.id, epic);
+    }
+
+    public void deleteTaskById(int id) {
+        this.getAllTasks().remove(id);
+    }
+
+    public void deleteSubtaskById(int id) {
+        this.getAllSubtasks().remove(id);
+        this.getAllSubtasks().get(id).epic.checkEpicStatus();
+    }
+
+    public void deleteEpicById(int id) {
+        this.getAllEpics().remove(id);
+    }
+
+    public ArrayList<Subtask> getSubtasksListByEpic(Epic epic) {
+        return epic.getSubtasks();
+    }
+}
