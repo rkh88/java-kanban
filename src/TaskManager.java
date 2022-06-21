@@ -49,22 +49,32 @@ public class TaskManager {
         return getAllEpics().get(id);
     }
 
-    public Task createTask(String name, String description) {
-        Task task = new Task(name, description, counter);
+    public Task createTask(Task task, String name, String description) {
+        task.setName(name);
+        task.setDescription(description);
+        task.setId(counter);
+        task.setStatus(Status.NEW);
         getAllTasks().put(counter, task);
         counter++;
         return task;
     }
 
-    public Epic createEpic(String name, String description) {
-        Epic epic = new Epic(name, description, counter);
+    public Epic createEpic(Epic epic, String name, String description) {
+        epic.setName(name);
+        epic.setDescription(description);
+        epic.setId(counter);
+        epic.setStatus(Status.NEW);
+        epic.setSubtasks(new ArrayList<Subtask>());
         getAllEpics().put(counter, epic);
         counter++;
         return epic;
     }
 
-    public Subtask createSubtask(String name, String description, Status status, Epic epic) {
-        Subtask subtask = new Subtask(name, description, counter, status, epic);
+    public Subtask createSubtask(Subtask subtask, String name, String description, Status status, Epic epic) {
+        subtask.setName(name);
+        subtask.setDescription(description);
+        subtask.setEpic(epic);
+        subtask.setStatus(status);
         getAllSubtasks().put(counter, subtask);
         epic.addSubtask(subtask);
         epic.checkEpicStatus();

@@ -8,12 +8,9 @@ import java.util.Objects;
 public class Subtask extends Task {
     protected Epic epic;
 
-    public Subtask(String name, String description, int id, Status status, Epic epic) {
-        super(name, description, id);
-        this.status = status;
-        this.epic = epic;
-    }
+    public Subtask() {
 
+    }
 
     public Epic getEpic() {
         return epic;

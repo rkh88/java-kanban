@@ -11,11 +11,8 @@ public class Task {
     protected int id;
     protected Status status;
 
-    public Task(String name, String description, int id) {
-        this.name = name;
-        this.description = description;
-        this.id = id;
-        this.status = Status.NEW;
+    public Task() {
+
     }
 
     public String getName() {
