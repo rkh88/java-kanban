@@ -1,3 +1,8 @@
+import util.Epic;
+import util.Status;
+import util.Subtask;
+import util.Task;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -68,16 +73,16 @@ public class TaskManager {
     }
 
     public void updateTask(Task task) {
-        getAllTasks().put(task.id, task);
+        getAllTasks().put(task.getId(), task);
     }
 
     public void updateSubtask(Subtask subtask) {
-        getAllSubtasks().put(subtask.id, subtask);
-        getAllSubtasks().get(subtask.id).epic.checkEpicStatus();
+        getAllSubtasks().put(subtask.getId(), subtask);
+        getAllSubtasks().get(subtask.getId()).getEpic().checkEpicStatus();
     }
 
     public void updateEpic(Epic epic) {
-        getAllEpics().put(epic.id, epic);
+        getAllEpics().put(epic.getId(), epic);
     }
 
     public void deleteTaskById(int id) {
@@ -86,7 +91,7 @@ public class TaskManager {
 
     public void deleteSubtaskById(int id) {
         getAllSubtasks().remove(id);
-        getAllSubtasks().get(id).epic.checkEpicStatus();
+        getAllSubtasks().get(id).getEpic().checkEpicStatus();
     }
 
     public void deleteEpicById(int id) {
