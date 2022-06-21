@@ -1,7 +1,9 @@
-import util.Epic;
-import util.Status;
-import util.Subtask;
-import util.Task;
+package util;
+
+import tasks.Epic;
+import tasks.Status;
+import tasks.Subtask;
+import tasks.Task;
 
 public class Main {
 

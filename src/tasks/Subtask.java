@@ -1,7 +1,4 @@
-package util;
-
-import util.Epic;
-import util.Status;
+package tasks;
 
 import java.util.Objects;
 
@@ -28,7 +25,7 @@ public class Subtask extends Task {
 
     @Override
     public String toString() {
-        return "util.Subtask{" +
+        return "tasks.Subtask{" +
                 "epic=" + epic +
                 ", name='" + name + '\'' +
                 ", description='" + description + '\'' +
