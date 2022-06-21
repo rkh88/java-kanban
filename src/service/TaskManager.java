@@ -43,43 +43,33 @@ public class TaskManager {
         return getAllTasks().get(id);
     }
 
-    public Task getSubtaskById(int id) {
+    public Subtask getSubtaskById(int id) {
         return getAllSubtasks().get(id);
     }
 
-    public Task getEpicById(int id) {
+    public Epic getEpicById(int id) {
         return getAllEpics().get(id);
     }
 
-    public Task createTask(Task task, String name, String description) {
-        task.setName(name);
-        task.setDescription(description);
+    public Task createTask(Task task) {
         task.setId(counter);
-        task.setStatus(Status.NEW);
         getAllTasks().put(counter, task);
         counter++;
         return task;
     }
 
-    public Epic createEpic(Epic epic, String name, String description) {
-        epic.setName(name);
-        epic.setDescription(description);
+    public Epic createEpic(Epic epic) {
         epic.setId(counter);
-        epic.setStatus(Status.NEW);
-        epic.setSubtasks(new ArrayList<Subtask>());
         getAllEpics().put(counter, epic);
         counter++;
         return epic;
     }
 
-    public Subtask createSubtask(Subtask subtask, String name, String description, Status status, Epic epic) {
-        subtask.setName(name);
-        subtask.setDescription(description);
-        subtask.setEpic(epic);
-        subtask.setStatus(status);
+    public Subtask createSubtask(Subtask subtask) {
+        subtask.setId(counter);
         getAllSubtasks().put(counter, subtask);
-        epic.addSubtask(subtask);
-        checkEpicStatus(epic);
+        subtask.getEpic().addSubtask(subtask);
+        checkEpicStatus(subtask.getEpic());
         counter++;
         return subtask;
     }
@@ -109,17 +99,28 @@ public class TaskManager {
         }
     }
 
+    public void setSubtaskStatus(Subtask subtask, Status status) { //Если метод checkEpicStatus писать в TaskManager, а не в самом Epic, то при вызове метода setStatus() на сервисе у сабтаска не будет виден метод checkStatus(), а это каждый раз необходимо. В этом была моя идея
+        subtask.setStatus(status);
+        checkEpicStatus(subtask.getEpic());
+    }
+
     public void updateTask(Task task) {
-        getAllTasks().put(task.getId(), task);
+        if(getAllTasks().containsKey(task.getId())) {
+            getAllTasks().put(task.getId(), task);
+        }
     }
 
     public void updateSubtask(Subtask subtask) {
-        getAllSubtasks().put(subtask.getId(), subtask);
-        checkEpicStatus(getAllSubtasks().get(subtask.getId()).getEpic());
+        if(getAllSubtasks().containsKey(subtask.getId())) {
+            getAllSubtasks().put(subtask.getId(), subtask);
+            checkEpicStatus(getAllSubtasks().get(subtask.getId()).getEpic());
+        }
     }
 
     public void updateEpic(Epic epic) {
-        getAllEpics().put(epic.getId(), epic);
+        if(getAllEpics().containsKey(epic.getId())) {
+            getAllEpics().put(epic.getId(), epic);
+        }
     }
 
     public void deleteTaskById(int id) {

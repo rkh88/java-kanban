@@ -9,33 +9,33 @@ public class Main {
 
     public static void main(String[] args) {
         TaskManager taskManager = new TaskManager();
-        Task task1 = new Task();
-        Task task2 = new Task();
-        taskManager.createTask(task1, "Заняться домашними делами", "описание");
-        taskManager.createTask(task2, "Погулять", "описание");
-        Epic epic1 = new Epic();
-        taskManager.createEpic(epic1,"Сделать покупки", "описание");
-        Subtask subtask1 = new Subtask();
-        Subtask subtask2 = new Subtask();
-        taskManager.createSubtask(subtask1,"Купить помидоры", "описание", Status.NEW, epic1);
-        taskManager.createSubtask(subtask2,"Купить огурцы", "описание", Status.NEW, epic1);
-        Epic epic2 = new Epic();
-        taskManager.createEpic(epic2,"Позвонить другу", "описание");
-        Subtask subtask3 = new Subtask();
-        taskManager.createSubtask(subtask3,"Набрать номер", "описание", Status.NEW, epic2);
-        System.out.println(taskManager.getAllTasks());
-        System.out.println(taskManager.getAllEpics());
-        System.out.println(taskManager.getAllSubtasks());
-        taskManager.getSubtaskById(4).setStatus(Status.DONE);
-        taskManager.getSubtaskById(5).setStatus(Status.DONE);
-        System.out.println(taskManager.getAllEpics());
-        System.out.println(taskManager.getAllSubtasks());
-        Task task = new Task();
-        taskManager.createTask(task, "Побегать", "описание");
+        Task task1 = new Task("Заняться домашними делами", "описание");
+        Task task2 = new Task("Погулять", "описание");
+        taskManager.createTask(task1);
+        taskManager.createTask(task2);
+        Epic epic1 = new Epic("Сделать покупки", "описание");
+        taskManager.createEpic(epic1);
+        Subtask subtask1 = new Subtask("Купить помидоры", "описание", epic1);
+        Subtask subtask2 = new Subtask("Купить огурцы", "описание", epic1);
+        taskManager.createSubtask(subtask1);
+        taskManager.createSubtask(subtask2);
+        Epic epic2 = new Epic("Позвонить другу", "описание");
+        taskManager.createEpic(epic2);
+        Subtask subtask3 = new Subtask("Набрать номер", "описание", epic2);
+        taskManager.createSubtask(subtask3);
+        System.out.println("Check 1: " + taskManager.getAllTasks());
+        System.out.println("Check 2: " + taskManager.getAllEpics());
+        System.out.println("Check 3: " + taskManager.getAllSubtasks());
+        taskManager.setSubtaskStatus(taskManager.getSubtaskById(4), Status.DONE);
+        taskManager.setSubtaskStatus(taskManager.getSubtaskById(5), Status.DONE);
+        System.out.println("Check 4: " + taskManager.getAllEpics());
+        System.out.println("Check 5: " + taskManager.getAllSubtasks());
+        Task task = new Task("Побегать", "описание");
+        taskManager.createTask(task);
         taskManager.updateTask(task);
-        System.out.println(taskManager.getAllTasks());
+        System.out.println("Check 6: " + taskManager.getAllTasks());
         taskManager.deleteTaskById(1);
-        System.out.println(taskManager.getAllTasks());
+        System.out.println("Check 7: " + taskManager.getAllTasks());
 
     }
 }

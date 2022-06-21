@@ -5,6 +5,12 @@ import java.util.Objects;
 public class Subtask extends Task {
     protected Epic epic;
 
+    public Subtask(String name, String description, Epic epic) {
+        super(name, description);
+        this.epic = epic;
+        this.status = Status.NEW;
+    }
+
     public Epic getEpic() {
         return epic;
     }

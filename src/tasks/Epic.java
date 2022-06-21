@@ -6,6 +6,11 @@ import java.util.Objects;
 public class Epic extends Task {
     protected ArrayList<Subtask> subtasks;
 
+    public Epic(String name, String description) {
+        super(name, description);
+        this.subtasks = new ArrayList<Subtask>();
+    }
+
     public ArrayList<Subtask> getSubtasks() {
         return subtasks;
     }
