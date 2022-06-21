@@ -1,4 +1,4 @@
-package util;
+package service;
 
 import tasks.Epic;
 import tasks.Status;
@@ -23,19 +23,19 @@ public class Main {
         taskManager.createEpic(epic2,"Позвонить другу", "описание");
         Subtask subtask3 = new Subtask();
         taskManager.createSubtask(subtask3,"Набрать номер", "описание", Status.NEW, epic2);
-        System.out.println(taskManager.allTasks);
-        System.out.println(taskManager.allEpics);
-        System.out.println(taskManager.allSubtasks);
+        System.out.println(taskManager.getAllTasks());
+        System.out.println(taskManager.getAllEpics());
+        System.out.println(taskManager.getAllSubtasks());
         taskManager.getSubtaskById(4).setStatus(Status.DONE);
         taskManager.getSubtaskById(5).setStatus(Status.DONE);
-        System.out.println(taskManager.allEpics);
-        System.out.println(taskManager.allSubtasks);
+        System.out.println(taskManager.getAllEpics());
+        System.out.println(taskManager.getAllSubtasks());
         Task task = new Task();
         taskManager.createTask(task, "Побегать", "описание");
         taskManager.updateTask(task);
-        System.out.println(taskManager.allTasks);
+        System.out.println(taskManager.getAllTasks());
         taskManager.deleteTaskById(1);
-        System.out.println(taskManager.allTasks);
+        System.out.println(taskManager.getAllTasks());
 
     }
 }

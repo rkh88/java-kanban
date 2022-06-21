@@ -9,10 +9,6 @@ public class Task {
     protected int id;
     protected Status status;
 
-    public Task() {
-
-    }
-
     public String getName() {
         return name;
     }

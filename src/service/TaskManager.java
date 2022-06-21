@@ -1,4 +1,4 @@
-package util;
+package service;
 
 import tasks.Epic;
 import tasks.Status;
@@ -10,10 +10,10 @@ import java.util.HashMap;
 
 public class TaskManager {
 
-    protected HashMap<Integer, Task> allTasks;
-    protected HashMap<Integer, Subtask> allSubtasks;
-    protected HashMap<Integer, Epic> allEpics;
-    protected int counter = 1;
+    private HashMap<Integer, Task> allTasks;
+    private HashMap<Integer, Subtask> allSubtasks;
+    private HashMap<Integer, Epic> allEpics;
+    private int counter = 1;
 
     public HashMap<Integer, Task> getAllTasks() {
         return allTasks;
@@ -79,9 +79,34 @@ public class TaskManager {
         subtask.setStatus(status);
         getAllSubtasks().put(counter, subtask);
         epic.addSubtask(subtask);
-        epic.checkEpicStatus();
+        checkEpicStatus(epic);
         counter++;
         return subtask;
+    }
+
+    public void checkEpicStatus (Epic epic) {
+        int epicDone = 0;
+        int epicNew = 0;
+        for(Subtask currentSubtask : epic.getSubtasks()) {
+            if(currentSubtask.getStatus() == Status.DONE) {
+                epicDone++;
+            }
+        }
+        for(Subtask currentSubtask : epic.getSubtasks()) {
+            if(currentSubtask.getStatus() == Status.NEW) {
+                epicNew++;
+            }
+        }
+        if (epicDone == epic.getSubtasks().size() || epicNew == epic.getSubtasks().size() || epic.getSubtasks().size() == 0){
+            if (epicDone == epic.getSubtasks().size()) {
+                epic.setStatus(Status.DONE);
+            }
+            if (epicNew == epic.getSubtasks().size() || epic.getSubtasks().size() == 0) {
+                epic.setStatus(Status.NEW);
+            }
+        } else {
+            epic.setStatus(Status.IN_PROGRESS);
+        }
     }
 
     public void updateTask(Task task) {
@@ -90,7 +115,7 @@ public class TaskManager {
 
     public void updateSubtask(Subtask subtask) {
         getAllSubtasks().put(subtask.getId(), subtask);
-        getAllSubtasks().get(subtask.getId()).getEpic().checkEpicStatus();
+        checkEpicStatus(getAllSubtasks().get(subtask.getId()).getEpic());
     }
 
     public void updateEpic(Epic epic) {
@@ -103,7 +128,7 @@ public class TaskManager {
 
     public void deleteSubtaskById(int id) {
         getAllSubtasks().remove(id);
-        getAllSubtasks().get(id).getEpic().checkEpicStatus();
+        checkEpicStatus(getAllSubtasks().get(id).getEpic());
     }
 
     public void deleteEpicById(int id) {

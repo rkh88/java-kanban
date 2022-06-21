@@ -5,22 +5,12 @@ import java.util.Objects;
 public class Subtask extends Task {
     protected Epic epic;
 
-    public Subtask() {
-
-    }
-
     public Epic getEpic() {
         return epic;
     }
 
     public void setEpic(Epic epic) {
         this.epic = epic;
-    }
-
-    @Override
-    public void setStatus(Status status) {
-        super.setStatus(status);
-        this.epic.checkEpicStatus();
     }
 
     @Override
