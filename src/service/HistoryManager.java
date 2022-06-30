@@ -8,6 +8,6 @@ public interface HistoryManager {
 
     void add(Task task);
     ArrayList<Task> getHistory();
-    void printTaskHistory(InMemoryHistoryManager inMemoryHistoryManager);
+    void printTaskHistory();
 
 }

@@ -13,12 +13,7 @@ public class InMemoryTaskManager implements TaskManager {
     private HashMap<Integer, Task> allTasks = new HashMap<>();
     private HashMap<Integer, Subtask> allSubtasks = new HashMap<>();
     private HashMap<Integer, Epic> allEpics = new HashMap<>();
-    private ArrayList<Task> taskHistory = new ArrayList<>();
     private int counter = 1;
-
-    public ArrayList<Task> getTaskHistory() {
-        return taskHistory;
-    }
 
     @Override
     public HashMap<Integer, Task> getAllTasks() {
@@ -35,10 +30,10 @@ public class InMemoryTaskManager implements TaskManager {
         return allEpics;
     }
 
-    @Override
+ /*   @Override
     public ArrayList<Task> getHistory() {
         return taskHistory;
-    }
+    }*/
 
     @Override
     public void deleteAllTasks() { getAllTasks().clear(); }
@@ -51,35 +46,23 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public Task getTaskById(int id) {
-        checkTaskHistorySize(taskHistory);
-        taskHistory.add(getAllTasks().get(id));
+        InMemoryHistoryManager.checkTaskHistorySize();
+        Managers.getDefaultHistory().add(getAllTasks().get(id));
         return getAllTasks().get(id);
     }
 
     @Override
     public Subtask getSubtaskById(int id) {
-        checkTaskHistorySize(taskHistory);
-        taskHistory.add(getAllSubtasks().get(id));
+        InMemoryHistoryManager.checkTaskHistorySize();
+        Managers.getDefaultHistory().add(getAllSubtasks().get(id));
         return getAllSubtasks().get(id);
     }
 
     @Override
     public Epic getEpicById(int id) {
-        checkTaskHistorySize(taskHistory);
-        taskHistory.add(getAllEpics().get(id));
+        InMemoryHistoryManager.checkTaskHistorySize();
+        Managers.getDefaultHistory().add(getAllEpics().get(id));
         return getAllEpics().get(id);
-    }
-
-    public void checkTaskHistorySize(ArrayList<Task> taskHistory) { //освобождаем последнее место для добавление нового таска в историю просмотра
-        if (taskHistory.size() == 10) {
-            taskHistory.remove(0);
-        }
-    }
-
-    public void printTaskHistory() {
-        for(Task task : taskHistory) {
-            System.out.println(task.toString());
-        }
     }
 
     @Override
