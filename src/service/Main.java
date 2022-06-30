@@ -9,6 +9,8 @@ public class Main {
 
     public static void main(String[] args) {
 
+        //Здравствуйте! Можно ли дать больше комментариев по тому, как inMemoryTaskManager будет обращаться к менеджеру истории через интерфейс HistoryManager. Не понимаю, как это должно быть реализовано
+
         InMemoryTaskManager inMemoryTaskManager = new InMemoryTaskManager();
         InMemoryHistoryManager inMemoryHistoryManager = new InMemoryHistoryManager();
         Task task1 = new Task("Заняться домашними делами", "описание");
