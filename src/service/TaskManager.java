@@ -4,139 +4,52 @@ import tasks.Epic;
 import tasks.Status;
 import tasks.Subtask;
 import tasks.Task;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class TaskManager {
+public interface TaskManager {
 
-    private HashMap<Integer, Task> allTasks;
-    private HashMap<Integer, Subtask> allSubtasks;
-    private HashMap<Integer, Epic> allEpics;
-    private int counter = 1;
+    HashMap<Integer, Task> getAllTasks();
 
-    public HashMap<Integer, Task> getAllTasks() {
-        return allTasks;
-    }
+    HashMap<Integer, Subtask> getAllSubtasks();
 
-    public HashMap<Integer, Subtask> getAllSubtasks() {
-        return allSubtasks;
-    }
+    HashMap<Integer, Epic> getAllEpics();
 
-    public HashMap<Integer, Epic> getAllEpics() {
-        return allEpics;
-    }
+    ArrayList<Task> getHistory();
 
-    public TaskManager() {
-        this.allTasks = new HashMap<>();
-        this.allSubtasks = new HashMap<>();
-        this.allEpics = new HashMap<>();
-    }
+    void deleteAllTasks();
 
-    public void deleteAllTasks() { getAllTasks().clear(); }
+    void deleteAllEpics();
 
-    public void deleteAllEpics() { getAllEpics().clear(); }
+    void deleteAllSubtasks();
 
-    public void deleteAllSubtasks() { getAllSubtasks().clear(); }
+    Task getTaskById(int id);
 
-    public Task getTaskById(int id) {
-        return getAllTasks().get(id);
-    }
+    Subtask getSubtaskById(int id);
 
-    public Subtask getSubtaskById(int id) {
-        return getAllSubtasks().get(id);
-    }
+    Epic getEpicById(int id);
 
-    public Epic getEpicById(int id) {
-        return getAllEpics().get(id);
-    }
+    Task createTask(Task task);
 
-    public Task createTask(Task task) {
-        task.setId(counter);
-        getAllTasks().put(counter, task);
-        counter++;
-        return task;
-    }
+    Epic createEpic(Epic epic);
 
-    public Epic createEpic(Epic epic) {
-        epic.setId(counter);
-        getAllEpics().put(counter, epic);
-        counter++;
-        return epic;
-    }
+    Subtask createSubtask(Subtask subtask);
 
-    public Subtask createSubtask(Subtask subtask) {
-        subtask.setId(counter);
-        getAllSubtasks().put(counter, subtask);
-        subtask.getEpic().addSubtask(subtask);
-        checkEpicStatus(subtask.getEpic());
-        counter++;
-        return subtask;
-    }
+    void checkEpicStatus (Epic epic);
 
-    public void checkEpicStatus (Epic epic) {
-        int epicDone = 0;
-        int epicNew = 0;
-        for(Subtask currentSubtask : epic.getSubtasks()) {
-            if(currentSubtask.getStatus() == Status.DONE) {
-                epicDone++;
-            }
-        }
-        for(Subtask currentSubtask : epic.getSubtasks()) {
-            if(currentSubtask.getStatus() == Status.NEW) {
-                epicNew++;
-            }
-        }
-        if (epicDone == epic.getSubtasks().size() || epicNew == epic.getSubtasks().size() || epic.getSubtasks().size() == 0){
-            if (epicDone == epic.getSubtasks().size()) {
-                epic.setStatus(Status.DONE);
-            }
-            if (epicNew == epic.getSubtasks().size() || epic.getSubtasks().size() == 0) {
-                epic.setStatus(Status.NEW);
-            }
-        } else {
-            epic.setStatus(Status.IN_PROGRESS);
-        }
-    }
+    void setSubtaskStatus(Subtask subtask, Status status);
 
-    public void setSubtaskStatus(Subtask subtask, Status status) { //Если метод checkEpicStatus писать в TaskManager, а не в самом Epic, то при вызове метода setStatus() на сервисе у сабтаска не будет виден метод checkStatus(), а это каждый раз необходимо. В этом была моя идея
-        subtask.setStatus(status);
-        checkEpicStatus(subtask.getEpic());
-    }
+    void updateTask(Task task);
 
-    public void updateTask(Task task) {
-        if(getAllTasks().containsKey(task.getId())) {
-            getAllTasks().put(task.getId(), task);
-        }
-    }
+    void updateSubtask(Subtask subtask);
 
-    public void updateSubtask(Subtask subtask) {
-        if(getAllSubtasks().containsKey(subtask.getId())) {
-            getAllSubtasks().put(subtask.getId(), subtask);
-            checkEpicStatus(getAllSubtasks().get(subtask.getId()).getEpic());
-        }
-    }
+    void updateEpic(Epic epic);
 
-    public void updateEpic(Epic epic) {
-        if(getAllEpics().containsKey(epic.getId())) {
-            getAllEpics().put(epic.getId(), epic);
-        }
-    }
+    void deleteTaskById(int id);
 
-    public void deleteTaskById(int id) {
-        getAllTasks().remove(id);
-    }
+    void deleteSubtaskById(int id);
 
-    public void deleteSubtaskById(int id) {
-        getAllSubtasks().remove(id);
-        checkEpicStatus(getAllSubtasks().get(id).getEpic());
-    }
+    void deleteEpicById(int id);
 
-    public void deleteEpicById(int id) {
-        getAllEpics().remove(id);
-    }
-
-    public ArrayList<Subtask> getSubtasksListByEpic(Epic epic) {
-        return epic.getSubtasks();
-    }
+    ArrayList<Subtask> getSubtasksListByEpic(Epic epic);
 }
