@@ -30,11 +30,6 @@ public class InMemoryTaskManager implements TaskManager {
         return allEpics;
     }
 
- /*   @Override
-    public ArrayList<Task> getHistory() {
-        return taskHistory;
-    }*/
-
     @Override
     public void deleteAllTasks() { getAllTasks().clear(); }
 
