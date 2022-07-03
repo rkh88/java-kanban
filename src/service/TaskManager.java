@@ -15,6 +15,8 @@ public interface TaskManager {
 
     HashMap<Integer, Epic> getAllEpics();
 
+    HistoryManager getHistoryManager();
+
     void deleteAllTasks();
 
     void deleteAllEpics();

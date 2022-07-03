@@ -9,5 +9,6 @@ public interface HistoryManager {
     void add(Task task);
     ArrayList<Task> getHistory();
     void printTaskHistory();
+    void checkTaskHistorySize();
 
 }
