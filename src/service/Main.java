@@ -41,9 +41,10 @@ public class Main {
         System.out.println("Check 6: " + taskManager.getAllTasks());
         taskManager.deleteTaskById(1);
         System.out.println("Check 7: " + taskManager.getAllTasks());
-        /*taskManager.getHistoryManager().printTaskHashMap();*/
-        //Check 8
-        taskManager.getTaskById(1);
+        taskManager.deleteEpicById(3);
+        System.out.println("Check 8: " + taskManager.getAllEpics());
+        taskManager.getHistoryManager().printTaskHashMap();
+        taskManager.getTaskById(2);
         taskManager.getHistoryManager().printTaskHistory();
     }
 }
