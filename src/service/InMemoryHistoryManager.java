@@ -161,7 +161,7 @@ public class InMemoryHistoryManager implements HistoryManager {
 
     @Override
     public void add(Task task) {
-        if(taskHashMap.containsKey(task.getId())) { // не понимаю, почему сюда приходит пустая мапа и пустой линкедлист и возникает NullPointerException. На предыдущем шаге мапа и лист еще полные
+        if(taskHashMap.containsKey(task.getId())) {
             taskCustomLinkedList.removeNode(taskHashMap.get(task.getId()));
             System.out.println("Previous node removed");
         }
