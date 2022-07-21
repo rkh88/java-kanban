@@ -1,14 +1,19 @@
 package service;
 
 import tasks.Task;
-
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Objects;
 
 public class InMemoryHistoryManager implements HistoryManager {
 
-    CustomLinkedList<Task> taskCustomLinkedList = new CustomLinkedList<>();
-    HashMap<Integer, Node> taskHashMap = new HashMap<>();
+    private CustomLinkedList<Task> taskCustomLinkedList;
+    private HashMap<Integer, Node> taskHashMap;
+
+    public InMemoryHistoryManager() {
+        taskCustomLinkedList = new CustomLinkedList<>();
+        taskHashMap = new HashMap<>();
+    }
 
     public CustomLinkedList<Task> getTaskCustomLinkedList() {
         return taskCustomLinkedList;
@@ -22,18 +27,19 @@ public class InMemoryHistoryManager implements HistoryManager {
         private Node head;
         private Node tail;
 
-        public void insert(Task data) {
+        public void insert(tasks.Task data) {
             if (head == null) {
-                head = new Node((tasks.Task) data, null, null);
+                head = new Node(data, null, null);
                 tail = head;
             } else {
                 Node oldTail = tail;
-                tail = new Node((tasks.Task) data, null, oldTail);
+                tail = new Node(data, null, oldTail);
+                oldTail.setNextNode(tail);
             }
         }
 
         private Node getLastNode() {
-            if (this.head == null) {
+            if (head == null) {
                 return null;
             } else {
                 Node currentNode = head;
@@ -45,17 +51,20 @@ public class InMemoryHistoryManager implements HistoryManager {
         }
 
 
-        public Node removeNode(Node node) {
+        public void removeNode(Node node) {
             Node oldPrevious = node.getPreviousNode();
             Node oldNext = node.getNextNode();
-            if (oldPrevious == null) {
+            if (node == head) {
                 oldNext.setPreviousNode(null);
-            } else {
+                head = oldNext;
+            } else if(oldNext != null) {
                 oldPrevious.setNextNode(oldNext);
                 oldNext.setPreviousNode(oldPrevious);
+            } else {
+                oldPrevious.setNextNode(null);
+                tail = oldPrevious;
             }
-
-            return node;
+            System.out.println("Node was removed");
         }
 
         public Node getHead() {
@@ -83,10 +92,7 @@ public class InMemoryHistoryManager implements HistoryManager {
         @Override
         public String toString() {
             return "Node{" +
-                    "task=" + data +
-                    ", next=" + next +
-                    ", previous=" + previous +
-                    '}';
+                    "task=" + data;
         }
 
         public Node getPreviousNode() {
@@ -119,6 +125,18 @@ public class InMemoryHistoryManager implements HistoryManager {
             this.next = nextNode;
         }
 
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+            Node node = (Node) o;
+            return Objects.equals(data, node.data) && Objects.equals(next, node.next) && Objects.equals(previous, node.previous);
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(data, next, previous);
+        }
     }
 
 
@@ -143,11 +161,13 @@ public class InMemoryHistoryManager implements HistoryManager {
 
     @Override
     public void add(Task task) {
-        if(taskHashMap.containsKey(task.getId())) {
+        if(taskHashMap.containsKey(task.getId())) { // не понимаю, почему сюда приходит пустая мапа и пустой линкедлист и возникает NullPointerException
             taskCustomLinkedList.removeNode(taskHashMap.get(task.getId()));
+            System.out.println("Previous node removed");
         }
         taskCustomLinkedList.insert(task);
-        taskHashMap.put(task.getId(), taskCustomLinkedList.getLastNode());
+        taskHashMap.put(task.getId(), taskCustomLinkedList.getTail());
+        System.out.println("Task inserted to CustomLinkedList, id and node added to TaskHashMap");
     }
 
     @Override
@@ -165,7 +185,14 @@ public class InMemoryHistoryManager implements HistoryManager {
     @Override
     public void printTaskHistory() {
         for(Task task : this.getHistory()) {
-            System.out.println("Task history: " + task.toString());
+            System.out.println("Task history: id " + task.getId() + " " + task.toString());
+        }
+    }
+
+    @Override
+    public void printTaskHashMap() {
+        for(Integer id : taskHashMap.keySet()) {
+            System.out.println("Id " + id + ":" + taskHashMap.get(id).toString());
         }
     }
 
