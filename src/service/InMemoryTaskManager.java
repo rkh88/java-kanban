@@ -204,9 +204,9 @@ public class InMemoryTaskManager implements TaskManager {
 
         if(getAllEpics().containsKey(id)) {
             ArrayList<Integer> keysToDelete = new ArrayList<>();
-            for(Integer key : getAllSubtasks().keySet()) { // если удаляется эпик, сначала надо удалить все его сабтаски
+            for(Integer key : getAllSubtasks().keySet()) {
                 if(getAllSubtasks().get(key).getEpic().equals(getAllEpics().get(id))) {
-                    keysToDelete.add(key);// избегаю concurrent modification exception
+                    keysToDelete.add(key);
                 }
             }
             for(Integer key : keysToDelete){
