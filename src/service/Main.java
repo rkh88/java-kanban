@@ -31,7 +31,7 @@ public class Main {
         taskManager.getTaskById(1);
         taskManager.getTaskById(2);
         taskManager.getEpicById(3);
-        taskManager.getHistoryManager().printTaskHistory();
+        printTaskHistory(taskManager.getHistoryManager());
         taskManager.setSubtaskStatus(taskManager.getSubtaskById(4), Status.DONE);
         taskManager.setSubtaskStatus(taskManager.getSubtaskById(5), Status.DONE);
         System.out.println("Check 4: " + taskManager.getAllEpics());
@@ -42,14 +42,31 @@ public class Main {
         System.out.println("Check 6: " + taskManager.getAllTasks());
         taskManager.deleteTaskById(1);
         System.out.println("Check 7: " + taskManager.getAllTasks());
-       taskManager.deleteEpicById(3);
+        taskManager.deleteEpicById(3);
         System.out.println("Check 8.1: " + taskManager.getAllEpics());
         System.out.println("Check 8.2: " + taskManager.getAllSubtasks());
         System.out.println("Check 8.3: ");
-        taskManager.getHistoryManager().printTaskHistory();
+        printTaskHistory(taskManager.getHistoryManager());
         System.out.println("Check 8.4: ");
-        taskManager.getHistoryManager().printTaskHashMap();
+        printTaskHistory(taskManager.getHistoryManager());
         taskManager.getTaskById(2);
-        taskManager.getHistoryManager().printTaskHistory();
+        printTaskHistory(taskManager.getHistoryManager());
+        printTaskHashMap(taskManager.getHistoryManager());
+        taskManager.getSubtaskById(5);
+        printTaskHistory(taskManager.getHistoryManager());
+        printTaskHashMap(taskManager.getHistoryManager());
     }
+
+    public static void printTaskHistory(HistoryManager hm) {
+        for(Task task : hm.getHistory()) {
+            System.out.println("Task history: id " + task.getId() + " " + task.toString());
+        }
+    }
+
+    public static void printTaskHashMap(HistoryManager hm) {
+        for(Integer id : hm.getTaskHashMap().keySet()) {
+            System.out.println("Id " + id + ":" + hm.getTaskHashMap().get(id).toString());
+        }
+    }
+
 }

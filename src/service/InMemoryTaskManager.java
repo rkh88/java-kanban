@@ -47,38 +47,23 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public Task getTaskById(int id) {
-        if(getAllTasks().containsKey(id)){
-            Task task = getAllTasks().get(id);
-            historyManager.add(task);
-            return task;
-        } else {
-            System.out.println("No such task");
-            return new Task("Random task", "description"); // Вот тут вопрос. Что вернуть, если таска с указанным айдишником нет? А если вообще нет тасков? Тот же вопрос для двух других аналогичных методов
-        }
+        Task task = getAllTasks().get(id);
+        historyManager.add(task);
+        return task;
     }
 
     @Override
     public Subtask getSubtaskById(int id) {
-        if (getAllSubtasks().containsKey(id)) {
-            Subtask subtask = getAllSubtasks().get(id);
-            historyManager.add(subtask);
-            return subtask;
-        } else {
-            System.out.println("No such subtask");
-            return new Subtask("Random task", "description", new Epic("Random Epic", "description"));
-        }
+        Subtask subtask = getAllSubtasks().get(id);
+        historyManager.add(subtask);
+        return subtask;
     }
 
     @Override
     public Epic getEpicById(int id) {
-        if (getAllEpics().containsKey(id)) {
-            Epic epic = getAllEpics().get(id);
-            historyManager.add(epic);
-            return epic;
-        } else {
-            System.out.println("No such epic");
-            return new Epic("Random epic", "description");
-        }
+        Epic epic = getAllEpics().get(id);
+        historyManager.add(epic);
+        return epic;
     }
 
     @Override

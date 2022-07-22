@@ -15,6 +15,11 @@ public class InMemoryHistoryManager implements HistoryManager {
         taskHashMap = new HashMap<>();
     }
 
+    @Override
+    public HashMap<Integer, Node> getTaskHashMap() {
+        return taskHashMap;
+    }
+
     public class CustomLinkedList {
         private Node head;
         private Node tail;
@@ -146,21 +151,6 @@ public class InMemoryHistoryManager implements HistoryManager {
     @Override
     public ArrayList<Task> getHistory() {
         return getAllTasks();
-    }
-
-
-    @Override
-    public void printTaskHistory() {
-        for(Task task : this.getHistory()) {
-            System.out.println("Task history: id " + task.getId() + " " + task.toString());
-        }
-    }
-
-    @Override
-    public void printTaskHashMap() {
-        for(Integer id : taskHashMap.keySet()) {
-            System.out.println("Id " + id + ":" + taskHashMap.get(id).toString());
-        }
     }
 
 }
