@@ -55,8 +55,13 @@ public class InMemoryHistoryManager implements HistoryManager {
             Node oldPrevious = node.getPreviousNode();
             Node oldNext = node.getNextNode();
             if (node == head) {
-                oldNext.setPreviousNode(null);
-                head = oldNext;
+                if(oldNext == null) {
+                    head = null;
+                    tail = null;
+                } else {
+                    oldNext.setPreviousNode(null);
+                    head = oldNext;
+                }
             } else if(oldNext != null) {
                 oldPrevious.setNextNode(oldNext);
                 oldNext.setPreviousNode(oldPrevious);
@@ -163,7 +168,7 @@ public class InMemoryHistoryManager implements HistoryManager {
     public void add(Task task) {
         if(taskHashMap.containsKey(task.getId())) {
             taskCustomLinkedList.removeNode(taskHashMap.get(task.getId()));
-            System.out.println("Previous node removed");
+            System.out.println("Previous equal node removed");
         }
         taskCustomLinkedList.insert(task);
         taskHashMap.put(task.getId(), taskCustomLinkedList.getTail());
@@ -172,8 +177,8 @@ public class InMemoryHistoryManager implements HistoryManager {
 
     @Override
     public void remove(int id) {
-        taskHashMap.remove(id);
         taskCustomLinkedList.removeNode(taskHashMap.get(id));
+        taskHashMap.remove(id);
     }
 
     @Override

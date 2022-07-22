@@ -148,17 +148,22 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public void deleteTaskById(int id) {
+        historyManager.remove(id);
         getAllTasks().remove(id);
+        System.out.println("Task with id " + id + " was removed");
     }
 
     @Override
     public void deleteSubtaskById(int id) {
+        historyManager.remove(id);
         getAllSubtasks().remove(id);
         checkEpicStatus(getAllSubtasks().get(id).getEpic());
+        System.out.println("Subtask with id " + id + " was removed");
     }
 
     @Override
     public void deleteEpicById(int id) {
+        historyManager.remove(id);
         ArrayList<Integer> keysToDelete = new ArrayList<>();
         for(Integer key : getAllSubtasks().keySet()) { // если удаляется эпик, сначала надо удалить все его сабтаски
             if(getAllSubtasks().get(key).getEpic().equals(getAllEpics().get(id))) {
@@ -166,9 +171,11 @@ public class InMemoryTaskManager implements TaskManager {
             }
         }
         for(Integer key : keysToDelete){
+            historyManager.remove(key);
             getAllSubtasks().remove(key);
         }
         getAllEpics().remove(id);
+        System.out.println("Epic with id " + id + " and all its subtasks were removed");
     }
 
     @Override

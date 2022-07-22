@@ -44,6 +44,9 @@ public class Main {
         taskManager.deleteEpicById(3);
         System.out.println("Check 8.1: " + taskManager.getAllEpics());
         System.out.println("Check 8.2: " + taskManager.getAllSubtasks());
+        System.out.println("Check 8.3: ");
+        taskManager.getHistoryManager().printTaskHistory();
+        System.out.println("Check 8.4: ");
         taskManager.getHistoryManager().printTaskHashMap();
         taskManager.getTaskById(2);
         taskManager.getHistoryManager().printTaskHistory();
