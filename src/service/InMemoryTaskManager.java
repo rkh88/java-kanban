@@ -10,9 +10,9 @@ import java.util.HashMap;
 
 public class InMemoryTaskManager implements TaskManager {
 
-    private HashMap<Integer, Task> allTasks = new HashMap<>();
-    private HashMap<Integer, Subtask> allSubtasks = new HashMap<>();
-    private HashMap<Integer, Epic> allEpics = new HashMap<>();
+    private final HashMap<Integer, Task> allTasks = new HashMap<>();
+    private final HashMap<Integer, Subtask> allSubtasks = new HashMap<>();
+    private final HashMap<Integer, Epic> allEpics = new HashMap<>();
     private int counter = 1;
     private final HistoryManager historyManager = Managers.getDefaultHistory();
 
@@ -52,6 +52,7 @@ public class InMemoryTaskManager implements TaskManager {
             historyManager.add(task);
             return task;
         } else {
+            System.out.println("No such task");
             return new Task("Random task", "description"); // Вот тут вопрос. Что вернуть, если таска с указанным айдишником нет? А если вообще нет тасков? Тот же вопрос для двух других аналогичных методов
         }
     }
@@ -63,6 +64,7 @@ public class InMemoryTaskManager implements TaskManager {
             historyManager.add(subtask);
             return subtask;
         } else {
+            System.out.println("No such subtask");
             return new Subtask("Random task", "description", new Epic("Random Epic", "description"));
         }
     }
@@ -74,6 +76,7 @@ public class InMemoryTaskManager implements TaskManager {
             historyManager.add(epic);
             return epic;
         } else {
+            System.out.println("No such epic");
             return new Epic("Random epic", "description");
         }
     }
@@ -83,6 +86,7 @@ public class InMemoryTaskManager implements TaskManager {
         task.setId(counter);
         getAllTasks().put(counter, task);
         counter++;
+        System.out.println("Task " + task.toString() + " was created");
         return task;
     }
 
@@ -91,6 +95,7 @@ public class InMemoryTaskManager implements TaskManager {
         epic.setId(counter);
         getAllEpics().put(counter, epic);
         counter++;
+        System.out.println("Epic " + epic.toString() + " was created");
         return epic;
     }
 
@@ -101,6 +106,7 @@ public class InMemoryTaskManager implements TaskManager {
         subtask.getEpic().addSubtask(subtask);
         checkEpicStatus(subtask.getEpic());
         counter++;
+        System.out.println("Subtask " + subtask.toString() + " was created");
         return subtask;
     }
 
@@ -167,6 +173,8 @@ public class InMemoryTaskManager implements TaskManager {
         if(getAllTasks().containsKey(id)) {
             getAllTasks().remove(id);
             System.out.println("Task with id " + id + " was removed from initial TaskHashMap");
+        } else {
+            System.out.println("No such task");
         }
     }
 
@@ -180,6 +188,8 @@ public class InMemoryTaskManager implements TaskManager {
             getAllSubtasks().remove(id);
             checkEpicStatus(getAllSubtasks().get(id).getEpic());
             System.out.println("Subtask with id " + id + " was removed from initial TaskHashMap");
+        } else {
+            System.out.println("No such subtask");
         }
     }
 
@@ -214,6 +224,8 @@ public class InMemoryTaskManager implements TaskManager {
             }
             getAllEpics().remove(id);
             System.out.println("Epic with id " + id + " and all its subtasks were removed from initial TaskHashMap");
+        } else {
+            System.out.println("No such epic");
         }
 
     }

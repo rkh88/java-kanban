@@ -27,7 +27,8 @@ public class Main {
         System.out.println("Check 1: " + taskManager.getAllTasks());
         System.out.println("Check 2: " + taskManager.getAllEpics());
         System.out.println("Check 3: " + taskManager.getAllSubtasks());
-        taskManager.deleteEpicById(3);
+        /*taskManager.deleteEpicById(3);*/
+        taskManager.getTaskById(1);
         taskManager.getTaskById(2);
         taskManager.getEpicById(3);
         taskManager.getHistoryManager().printTaskHistory();
@@ -41,13 +42,13 @@ public class Main {
         System.out.println("Check 6: " + taskManager.getAllTasks());
         taskManager.deleteTaskById(1);
         System.out.println("Check 7: " + taskManager.getAllTasks());
-       /* taskManager.deleteEpicById(3);
+       taskManager.deleteEpicById(3);
         System.out.println("Check 8.1: " + taskManager.getAllEpics());
         System.out.println("Check 8.2: " + taskManager.getAllSubtasks());
         System.out.println("Check 8.3: ");
         taskManager.getHistoryManager().printTaskHistory();
         System.out.println("Check 8.4: ");
-        taskManager.getHistoryManager().printTaskHashMap();*/
+        taskManager.getHistoryManager().printTaskHashMap();
         taskManager.getTaskById(2);
         taskManager.getHistoryManager().printTaskHistory();
     }
