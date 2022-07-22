@@ -47,23 +47,35 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public Task getTaskById(int id) {
-        Task task = getAllTasks().get(id);
-        historyManager.add(task);
-        return task;
+        if(getAllTasks().containsKey(id)){
+            Task task = getAllTasks().get(id);
+            historyManager.add(task);
+            return task;
+        } else {
+            return new Task("Random task", "description"); // Вот тут вопрос. Что вернуть, если таска с указанным айдишником нет? А если вообще нет тасков? Тот же вопрос для двух других аналогичных методов
+        }
     }
 
     @Override
     public Subtask getSubtaskById(int id) {
-        Subtask subTask = getAllSubtasks().get(id);
-        historyManager.add(subTask);
-        return subTask;
+        if (getAllSubtasks().containsKey(id)) {
+            Subtask subtask = getAllSubtasks().get(id);
+            historyManager.add(subtask);
+            return subtask;
+        } else {
+            return new Subtask("Random task", "description", new Epic("Random Epic", "description"));
+        }
     }
 
     @Override
     public Epic getEpicById(int id) {
-        Epic epic = getAllEpics().get(id);
-        historyManager.add(epic);
-        return epic;
+        if (getAllEpics().containsKey(id)) {
+            Epic epic = getAllEpics().get(id);
+            historyManager.add(epic);
+            return epic;
+        } else {
+            return new Epic("Random epic", "description");
+        }
     }
 
     @Override
@@ -148,34 +160,62 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public void deleteTaskById(int id) {
-        historyManager.remove(id);
-        getAllTasks().remove(id);
-        System.out.println("Task with id " + id + " was removed");
+        if(historyManager.getHistory().contains(getAllTasks().get(id))) {
+            historyManager.remove(id);
+            System.out.println("Task with id " + id + " was removed from history");
+        }
+        if(getAllTasks().containsKey(id)) {
+            getAllTasks().remove(id);
+            System.out.println("Task with id " + id + " was removed from initial TaskHashMap");
+        }
     }
 
     @Override
     public void deleteSubtaskById(int id) {
-        historyManager.remove(id);
-        getAllSubtasks().remove(id);
-        checkEpicStatus(getAllSubtasks().get(id).getEpic());
-        System.out.println("Subtask with id " + id + " was removed");
+        if(historyManager.getHistory().contains(getAllSubtasks().get(id))) {
+            historyManager.remove(id);
+            System.out.println("Subtask with id " + id + " was removed from history");
+        }
+        if(getAllSubtasks().containsKey(id)) {
+            getAllSubtasks().remove(id);
+            checkEpicStatus(getAllSubtasks().get(id).getEpic());
+            System.out.println("Subtask with id " + id + " was removed from initial TaskHashMap");
+        }
     }
 
     @Override
-    public void deleteEpicById(int id) {
-        historyManager.remove(id);
-        ArrayList<Integer> keysToDelete = new ArrayList<>();
-        for(Integer key : getAllSubtasks().keySet()) { // если удаляется эпик, сначала надо удалить все его сабтаски
-            if(getAllSubtasks().get(key).getEpic().equals(getAllEpics().get(id))) {
-                keysToDelete.add(key);// избегаю concurrent modification exception
+    public void deleteEpicById(int id) { //тут надо по DRY все сделать, пока думаю как
+        if(historyManager.getHistory().size() != 0 && historyManager.getHistory().contains(getAllEpics().get(id))) {
+            historyManager.remove(id);
+            getAllEpics().remove(id);
+            System.out.println("Epic with id " + id + " was removed from history and from initial TaskHashMap");
+            ArrayList<Integer> keysToDelete = new ArrayList<>();
+            for(Integer key : getAllSubtasks().keySet()) { // если удаляется эпик, сначала надо удалить все его сабтаски
+                if(getAllSubtasks().get(key).getEpic().equals(getAllEpics().get(id))) {
+                    keysToDelete.add(key);// избегаю concurrent modification exception
+                }
             }
+            for(Integer key : keysToDelete){
+                historyManager.remove(key);
+                getAllSubtasks().remove(key);
+            }
+            System.out.println("All epic's subtasks were removed from history and from initial TaskHashMap");
         }
-        for(Integer key : keysToDelete){
-            historyManager.remove(key);
-            getAllSubtasks().remove(key);
+
+        if(getAllEpics().containsKey(id)) {
+            ArrayList<Integer> keysToDelete = new ArrayList<>();
+            for(Integer key : getAllSubtasks().keySet()) { // если удаляется эпик, сначала надо удалить все его сабтаски
+                if(getAllSubtasks().get(key).getEpic().equals(getAllEpics().get(id))) {
+                    keysToDelete.add(key);// избегаю concurrent modification exception
+                }
+            }
+            for(Integer key : keysToDelete){
+                getAllSubtasks().remove(key);
+            }
+            getAllEpics().remove(id);
+            System.out.println("Epic with id " + id + " and all its subtasks were removed from initial TaskHashMap");
         }
-        getAllEpics().remove(id);
-        System.out.println("Epic with id " + id + " and all its subtasks were removed");
+
     }
 
     @Override

@@ -7,23 +7,15 @@ import java.util.Objects;
 
 public class InMemoryHistoryManager implements HistoryManager {
 
-    private CustomLinkedList<Task> taskCustomLinkedList;
-    private HashMap<Integer, Node> taskHashMap;
+    private final CustomLinkedList taskCustomLinkedList;
+    private final HashMap<Integer, Node> taskHashMap;
 
     public InMemoryHistoryManager() {
-        taskCustomLinkedList = new CustomLinkedList<>();
+        taskCustomLinkedList = new CustomLinkedList();
         taskHashMap = new HashMap<>();
     }
 
-    public CustomLinkedList<Task> getTaskCustomLinkedList() {
-        return taskCustomLinkedList;
-    }
-
-    public HashMap<Integer, Node> getTaskHashMap() {
-        return taskHashMap;
-    }
-
-    public class CustomLinkedList<Task> {
+    public class CustomLinkedList {
         private Node head;
         private Node tail;
 
@@ -37,19 +29,6 @@ public class InMemoryHistoryManager implements HistoryManager {
                 oldTail.setNextNode(tail);
             }
         }
-
-        private Node getLastNode() {
-            if (head == null) {
-                return null;
-            } else {
-                Node currentNode = head;
-                while (currentNode.getNextNode() != null) {
-                    currentNode = currentNode.getNextNode();
-                }
-                return currentNode;
-            }
-        }
-
 
         public void removeNode(Node node) {
             Node oldPrevious = node.getPreviousNode();
@@ -76,16 +55,8 @@ public class InMemoryHistoryManager implements HistoryManager {
             return head;
         }
 
-        public void setHead(Node head) {
-            this.head = head;
-        }
-
         public Node getTail() {
             return tail;
-        }
-
-        public void setTail(Node tail) {
-            this.tail = tail;
         }
     }
 
@@ -118,10 +89,6 @@ public class InMemoryHistoryManager implements HistoryManager {
             return data;
         }
 
-        public void setData(Task data) {
-            this.data = data;
-        }
-
         public Node getNextNode() {
             return next;
         }
@@ -144,11 +111,10 @@ public class InMemoryHistoryManager implements HistoryManager {
         }
     }
 
-
     private ArrayList<Task> getAllTasks() {
         ArrayList<Task> taskHistory = new ArrayList<>();
         if(taskCustomLinkedList.getHead() == null){
-            return null;
+            return taskHistory;
         }else {
             Node currentNode = taskCustomLinkedList.getHead();
             while (currentNode != null) {
@@ -158,10 +124,6 @@ public class InMemoryHistoryManager implements HistoryManager {
 
         }
         return taskHistory;
-    }
-
-    private void linkLast(Task task) {
-        add(task);
     }
 
     @Override
@@ -183,7 +145,7 @@ public class InMemoryHistoryManager implements HistoryManager {
 
     @Override
     public ArrayList<Task> getHistory() {
-        return this.getAllTasks();
+        return getAllTasks();
     }
 
 
