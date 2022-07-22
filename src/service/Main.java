@@ -14,6 +14,7 @@ public class Main {
         Task task2 = new Task("Погулять", "описание");
         taskManager.createTask(task1);
         taskManager.createTask(task2);
+        taskManager.deleteEpicById(3);
         Epic epic1 = new Epic("Сделать покупки", "описание");
         taskManager.createEpic(epic1);
         Subtask subtask1 = new Subtask("Купить помидоры", "описание", epic1);
@@ -27,7 +28,6 @@ public class Main {
         System.out.println("Check 1: " + taskManager.getAllTasks());
         System.out.println("Check 2: " + taskManager.getAllEpics());
         System.out.println("Check 3: " + taskManager.getAllSubtasks());
-        /*taskManager.deleteEpicById(3);*/
         taskManager.getTaskById(1);
         taskManager.getTaskById(2);
         taskManager.getEpicById(3);
