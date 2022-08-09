@@ -23,17 +23,17 @@ public interface TaskManager {
 
     void deleteAllSubtasks();
 
-    Task getTaskById(int id);
+    Task getTaskById(int id) throws FileBackedTasksManager.ManagerSaveException;
 
-    Subtask getSubtaskById(int id);
+    Subtask getSubtaskById(int id) throws FileBackedTasksManager.ManagerSaveException;
 
-    Epic getEpicById(int id);
+    Epic getEpicById(int id) throws FileBackedTasksManager.ManagerSaveException;
 
-    Task createTask(Task task);
+    Task createTask(Task task) throws FileBackedTasksManager.ManagerSaveException;
 
-    Epic createEpic(Epic epic);
+    Epic createEpic(Epic epic) throws FileBackedTasksManager.ManagerSaveException;
 
-    Subtask createSubtask(Subtask subtask);
+    Subtask createSubtask(Subtask subtask) throws FileBackedTasksManager.ManagerSaveException;
 
     void checkEpicStatus (Epic epic);
 
@@ -45,11 +45,11 @@ public interface TaskManager {
 
     void updateEpic(Epic epic);
 
-    void deleteTaskById(int id);
+    void deleteTaskById(int id) throws FileBackedTasksManager.ManagerSaveException;
 
-    void deleteSubtaskById(int id);
+    void deleteSubtaskById(int id) throws FileBackedTasksManager.ManagerSaveException;
 
-    void deleteEpicById(int id);
+    void deleteEpicById(int id) throws FileBackedTasksManager.ManagerSaveException;
 
     ArrayList<Subtask> getSubtasksListByEpic(Epic epic);
 }

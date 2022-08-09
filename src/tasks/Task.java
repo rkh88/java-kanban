@@ -14,6 +14,12 @@ public class Task {
         this.description = description;
         this.status = Status.NEW;
     }
+    public Task(int id, String name, Status status, String description) {
+        this.id = id;
+        this.name = name;
+        this.status = status;
+        this.description = description;
+    }
 
     public int getId() {
         return id;
@@ -31,6 +37,14 @@ public class Task {
         this.status = status;
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
     @Override
     public String toString() {
         return "tasks.Task{" +
@@ -39,6 +53,10 @@ public class Task {
                 ", id=" + id +
                 ", status=" + status +
                 '}';
+    }
+
+    public String typeToString() {
+        return "TASK";
     }
 
     @Override
@@ -53,4 +71,6 @@ public class Task {
     public int hashCode() {
         return Objects.hash(name, description, id, status);
     }
+
+
 }

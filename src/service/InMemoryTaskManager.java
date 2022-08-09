@@ -46,28 +46,28 @@ public class InMemoryTaskManager implements TaskManager {
     public void deleteAllSubtasks() { getAllSubtasks().clear(); }
 
     @Override
-    public Task getTaskById(int id) {
+    public Task getTaskById(int id) throws FileBackedTasksManager.ManagerSaveException {
         Task task = getAllTasks().get(id);
         historyManager.add(task);
         return task;
     }
 
     @Override
-    public Subtask getSubtaskById(int id) {
+    public Subtask getSubtaskById(int id) throws FileBackedTasksManager.ManagerSaveException {
         Subtask subtask = getAllSubtasks().get(id);
         historyManager.add(subtask);
         return subtask;
     }
 
     @Override
-    public Epic getEpicById(int id) {
+    public Epic getEpicById(int id) throws FileBackedTasksManager.ManagerSaveException {
         Epic epic = getAllEpics().get(id);
         historyManager.add(epic);
         return epic;
     }
 
     @Override
-    public Task createTask(Task task) {
+    public Task createTask(Task task) throws FileBackedTasksManager.ManagerSaveException {
         task.setId(counter);
         getAllTasks().put(counter, task);
         counter++;
@@ -76,7 +76,7 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-    public Epic createEpic(Epic epic) {
+    public Epic createEpic(Epic epic) throws FileBackedTasksManager.ManagerSaveException {
         epic.setId(counter);
         getAllEpics().put(counter, epic);
         counter++;
@@ -85,7 +85,7 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-    public Subtask createSubtask(Subtask subtask) {
+    public Subtask createSubtask(Subtask subtask) throws FileBackedTasksManager.ManagerSaveException {
         subtask.setId(counter);
         getAllSubtasks().put(counter, subtask);
         subtask.getEpic().addSubtask(subtask);
@@ -150,7 +150,7 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-    public void deleteTaskById(int id) {
+    public void deleteTaskById(int id) throws FileBackedTasksManager.ManagerSaveException {
         if(historyManager.getHistory().contains(getAllTasks().get(id))) {
             historyManager.remove(id);
             System.out.println("Task with id " + id + " was removed from history");
@@ -164,7 +164,7 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-    public void deleteSubtaskById(int id) {
+    public void deleteSubtaskById(int id) throws FileBackedTasksManager.ManagerSaveException {
         if(historyManager.getHistory().contains(getAllSubtasks().get(id))) {
             historyManager.remove(id);
             System.out.println("Subtask with id " + id + " was removed from history");
@@ -179,7 +179,7 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-    public void deleteEpicById(int id) { //тут надо по DRY все сделать, пока думаю как
+    public void deleteEpicById(int id) throws FileBackedTasksManager.ManagerSaveException { //тут надо по DRY все сделать, пока думаю как
         if(historyManager.getHistory().size() != 0 && historyManager.getHistory().contains(getAllEpics().get(id))) {
             historyManager.remove(id);
             getAllEpics().remove(id);
