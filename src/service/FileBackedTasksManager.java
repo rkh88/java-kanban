@@ -148,7 +148,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
         return history;
     }
 
-    public FileBackedTasksManager loadFromFile(File file) throws IOException {
+    public FileBackedTasksManager loadFromFile(File file) throws IOException {// Я не могу понять, как писать этот метод. Прошу дать каки-то комментарии
         FileBackedTasksManager fb = new FileBackedTasksManager();
         try (BufferedReader br = new BufferedReader(new FileReader("history.csv"))) {
             String line;
@@ -162,7 +162,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
 
 
 
-    public static void main(String[] args) throws ManagerSaveException {
+    public static void main(String[] args) throws ManagerSaveException {// Здесь я не могу понять, как написать требуемую проверку
         FileBackedTasksManager fb = new FileBackedTasksManager();
         Task task = new Task("Task 1", "description Task 1");
         Epic epic = new Epic("Epic 1", "description Epic 1");
