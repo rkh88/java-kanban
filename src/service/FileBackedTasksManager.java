@@ -14,6 +14,8 @@ import java.util.List;
 
 public class FileBackedTasksManager extends InMemoryTaskManager {
 
+    List<Integer> idCsvList = new ArrayList<>();
+
     @Override
     public Task createTask(Task task) throws ManagerSaveException {
         super.createTask(task);
@@ -82,23 +84,34 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
     }
 
     public void save() throws ManagerSaveException {
-        try (FileOutputStream fos = new FileOutputStream("history.csv")) {
-            OutputStreamWriter oWriter = new OutputStreamWriter (fos, Charset.forName (String.valueOf(StandardCharsets.UTF_8)));
-            BufferedWriter bw = new BufferedWriter(oWriter);
+        try (PrintWriter writer = new PrintWriter(new File("history.csv"))) {
+            StringBuilder sb = new StringBuilder();
             for(Integer taskId : super.getAllTasks().keySet()) {
-                Task task = super.getAllTasks().get(taskId);
-                bw.newLine();
-                bw.write(toString(task));
+                if(!idCsvList.contains(taskId)) {
+                    idCsvList.add(taskId);
+                    Task task = super.getAllTasks().get(taskId);
+                    sb.append(toString(task));
+                    sb.append('\n');
+                    System.out.println("Task was added to CSV file");
+                }
             }
             for(Integer subtaskId : super.getAllSubtasks().keySet()) {
-                Subtask subtask = super.getAllSubtasks().get(subtaskId);
-                bw.newLine();
-                bw.write(toString(subtask));
+                if(!idCsvList.contains(subtaskId)) {
+                    idCsvList.add(subtaskId);
+                    Subtask subtask = super.getAllSubtasks().get(subtaskId);
+                    sb.append(toString(subtask));
+                    sb.append('\n');
+                    System.out.println("Subtask was added to CSV file");
+                }
             }
             for(Integer epicId : super.getAllEpics().keySet()) {
-                Epic epic = super.getAllEpics().get(epicId);
-                bw.newLine();
-                bw.write(toString(epic));
+                if(!idCsvList.contains(epicId)) {
+                    idCsvList.add(epicId);
+                    Epic epic = super.getAllEpics().get(epicId);
+                    sb.append(toString(epic));
+                    sb.append('\n');
+                    System.out.println("Epic was added to CSV file");
+                }
             }
            /* fos.close();
             oWriter.close();
@@ -168,11 +181,13 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
         fb.createTask(task);
         fb.createEpic(epic);
         fb.createSubtask(subtask);
+        System.out.println("Check 1: " + printAllTasks(fb));
+        /*System.out.println(fb.historyToString(fb.getHistoryManager()));
         fb.getTaskById(task.getId()); //На данный момент вот здесь получаю NPE
         fb.getEpicById(epic.getId());
         fb.getSubtaskById(subtask.getId());
-        System.out.println("Check 1: " + printAllTasks(fb));
-        System.out.println(fb.historyToString(fb.getHistoryManager()));
+
+        */
 
     }
 
