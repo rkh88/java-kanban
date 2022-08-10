@@ -6,8 +6,6 @@ import tasks.Subtask;
 import tasks.Task;
 
 import java.io.*;
-import java.nio.charset.Charset;
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -84,7 +82,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
     }
 
     public void save() throws ManagerSaveException {
-        try (PrintWriter writer = new PrintWriter(new File("history.csv"))) {
+        try (PrintWriter writer = new PrintWriter("history.csv")) {
             StringBuilder sb = new StringBuilder();
             for(Integer taskId : super.getAllTasks().keySet()) {
                 if(!idCsvList.contains(taskId)) {
@@ -92,6 +90,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
                     Task task = super.getAllTasks().get(taskId);
                     sb.append(toString(task));
                     sb.append('\n');
+                    writer.write(sb.toString());
                     System.out.println("Task was added to CSV file");
                 }
             }
@@ -101,6 +100,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
                     Subtask subtask = super.getAllSubtasks().get(subtaskId);
                     sb.append(toString(subtask));
                     sb.append('\n');
+                    writer.write(sb.toString());
                     System.out.println("Subtask was added to CSV file");
                 }
             }
@@ -110,8 +110,13 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
                     Epic epic = super.getAllEpics().get(epicId);
                     sb.append(toString(epic));
                     sb.append('\n');
+                    writer.write(sb.toString());
                     System.out.println("Epic was added to CSV file");
                 }
+            }
+            writer.close();
+            for (Integer taskId : idCsvList) {
+                System.out.println("idCsvList " + taskId);
             }
            /* fos.close();
             oWriter.close();
@@ -124,7 +129,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
     }
 
     public String toString(Task task) {
-        String result = String.format(task.getId() + "," + task.typeToString() + "," + task.getName() + "," + task.getStatus() + "," + task.getDescription());
+        String result = task.getId() + "," + task.typeToString() + "," + task.getName() + "," + task.getStatus() + "," + task.getDescription();
         return result;
     }
 
