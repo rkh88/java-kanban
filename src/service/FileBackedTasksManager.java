@@ -14,8 +14,6 @@ import java.util.List;
 
 public class FileBackedTasksManager extends InMemoryTaskManager {
 
-    File file = new File("history.csv");
-
     @Override
     public Task createTask(Task task) throws ManagerSaveException {
         super.createTask(task);
@@ -102,9 +100,9 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
                 bw.newLine();
                 bw.write(toString(epic));
             }
-            fos.close();
+           /* fos.close();
             oWriter.close();
-            bw.close();
+            bw.close();*/
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
@@ -123,7 +121,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
         return task;
     }
 
-    static String historyToString(HistoryManager manager) {
+    public String historyToString(HistoryManager manager) {
        StringBuffer historyBuffer = new StringBuffer();
         for(Integer taskId : manager.getTaskHashMap().keySet()) {
             Task task = manager.getTaskHashMap().get(taskId).getData();
@@ -132,7 +130,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
         return historyBuffer.toString();
     }
 
-    static List<Integer> historyFromString(String value) throws IOException {
+    public List<Integer> historyFromString(String value) throws IOException {
         List<Integer> history = new ArrayList<>();
         List<List<String>> records = new ArrayList<>();
         try (BufferedReader br = new BufferedReader(new FileReader("history.csv"))) {
@@ -170,9 +168,19 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
         fb.createTask(task);
         fb.createEpic(epic);
         fb.createSubtask(subtask);
-        fb.getTaskById(task.getId());
+        fb.getTaskById(task.getId()); //На данный момент вот здесь получаю NPE
         fb.getEpicById(epic.getId());
         fb.getSubtaskById(subtask.getId());
+        System.out.println("Check 1: " + printAllTasks(fb));
+        System.out.println(fb.historyToString(fb.getHistoryManager()));
+
+    }
+
+    public static boolean printAllTasks (FileBackedTasksManager fb) {
+        for(Integer key : fb.getAllTasks().keySet()) {
+            System.out.println(fb.getAllTasks().get(key).toString());
+        }
+        return true;
     }
 
 }

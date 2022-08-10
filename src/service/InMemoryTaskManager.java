@@ -215,6 +215,12 @@ public class InMemoryTaskManager implements TaskManager {
 
     }
 
+    /*public void printAllTasks() {
+        for(Integer key : allTasks.keySet()) {
+            System.out.println(allTasks.get(key).toString());
+        }
+    }*/
+
     @Override
     public ArrayList<Subtask> getSubtasksListByEpic(Epic epic) {
         return epic.getSubtasks();
