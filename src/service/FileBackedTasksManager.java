@@ -14,6 +14,8 @@ import java.util.List;
 
 public class FileBackedTasksManager extends InMemoryTaskManager {
 
+    File file = new File("history.csv");
+
     @Override
     public Task createTask(Task task) throws ManagerSaveException {
         super.createTask(task);
@@ -90,6 +92,16 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
                 bw.newLine();
                 bw.write(toString(task));
             }
+            for(Integer subtaskId : super.getAllSubtasks().keySet()) {
+                Subtask subtask = super.getAllSubtasks().get(subtaskId);
+                bw.newLine();
+                bw.write(toString(subtask));
+            }
+            for(Integer epicId : super.getAllEpics().keySet()) {
+                Epic epic = super.getAllEpics().get(epicId);
+                bw.newLine();
+                bw.write(toString(epic));
+            }
             fos.close();
             oWriter.close();
             bw.close();
@@ -117,7 +129,6 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
             Task task = manager.getTaskHashMap().get(taskId).getData();
             historyBuffer.append("\n" + task.getId() + "," + task.typeToString() + "," + task.getName() + "," + task.getStatus() + "," + task.getDescription());
         }
-
         return historyBuffer.toString();
     }
 
@@ -134,13 +145,19 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
         for(List<String> record : records) {
             history.add(Integer.parseInt(record.get(0)));
         }
-
-
         return history;
     }
 
-    static void loadFromFile(File file) {
-
+    public FileBackedTasksManager loadFromFile(File file) throws IOException {
+        FileBackedTasksManager fb = new FileBackedTasksManager();
+        try (BufferedReader br = new BufferedReader(new FileReader("history.csv"))) {
+            String line;
+            while ((line = br.readLine()) != null) {
+                Task task = fromString(line);
+                fb.createTask(task);
+            }
+        }
+        return fb;
     }
 
 
