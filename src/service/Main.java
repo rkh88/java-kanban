@@ -7,7 +7,7 @@ import tasks.Task;
 
 public class Main {
 
-    public static void main(String[] args) throws FileBackedTasksManager.ManagerSaveException {
+    public static void main(String[] args) throws ManagerSaveException {
 
         TaskManager taskManager = Managers.getDefault();
         Task task1 = new Task("Заняться домашними делами", "описание");
