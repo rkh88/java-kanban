@@ -17,7 +17,7 @@ public class InMemoryTaskManager implements TaskManager {
     private final HistoryManager historyManager = Managers.getDefaultHistory();
 
     @Override
-    public static HistoryManager getHistoryManager() {
+    public HistoryManager getHistoryManager() {
         return historyManager;
     }
 
@@ -46,28 +46,28 @@ public class InMemoryTaskManager implements TaskManager {
     public void deleteAllSubtasks() { getAllSubtasks().clear(); }
 
     @Override
-    public Task getTaskById(int id) throws ManagerSaveException {
+    public Task getTaskById(int id){
         Task task = getAllTasks().get(id);
         historyManager.add(task);
         return task;
     }
 
     @Override
-    public Subtask getSubtaskById(int id) throws ManagerSaveException {
+    public Subtask getSubtaskById(int id) {
         Subtask subtask = getAllSubtasks().get(id);
         historyManager.add(subtask);
         return subtask;
     }
 
     @Override
-    public Epic getEpicById(int id) throws ManagerSaveException {
+    public Epic getEpicById(int id) {
         Epic epic = getAllEpics().get(id);
         historyManager.add(epic);
         return epic;
     }
 
     @Override
-    public Task createTask(Task task) throws ManagerSaveException {
+    public Task createTask(Task task) {
         task.setId(counter);
         getAllTasks().put(counter, task);
         counter++;
@@ -76,7 +76,7 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-    public Epic createEpic(Epic epic) throws ManagerSaveException {
+    public Epic createEpic(Epic epic) {
         epic.setId(counter);
         getAllEpics().put(counter, epic);
         counter++;
@@ -85,7 +85,7 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-    public Subtask createSubtask(Subtask subtask) throws ManagerSaveException {
+    public Subtask createSubtask(Subtask subtask) {
         subtask.setId(counter);
         getAllSubtasks().put(counter, subtask);
         subtask.getEpic().addSubtask(subtask);
