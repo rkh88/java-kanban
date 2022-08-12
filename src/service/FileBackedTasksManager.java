@@ -12,7 +12,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
 
     File file;
 
-    List<Integer> idCsvList = new ArrayList<>();
+    List<Integer> idCsvList = new ArrayList<>(); //это поле нужно для того, чтобы при вызове save не добавлялись по новой повторки
 
     public FileBackedTasksManager(File file) {
         this.file = file;
@@ -80,7 +80,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
 
     public void save() throws ManagerSaveException {
 
-        try (PrintWriter writer = new PrintWriter("history.csv")) {
+        try (FileWriter fw = new FileWriter("history.csv")) {
             StringBuilder sb = new StringBuilder();
             for(Integer taskId : super.getAllTasks().keySet()) {
                 if(!idCsvList.contains(taskId)) {
@@ -88,12 +88,19 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
                     Task task = super.getAllTasks().get(taskId);
                     sb.append(taskToString(task));
                     sb.append('\n');
-                    writer.write(sb.toString());
                     System.out.println("Task was added to CSV file");
                 }
             }
-
-            writer.close();
+            sb.append('\n');
+            for(Integer key : super.getHistoryManager().getTaskHashMap().keySet()) { // идем по всей истории просмотров
+                Task taskViewed = super.getHistoryManager().getTaskHashMap().get(key).getData();//получаем из истории просмотренный таск
+                sb.append(taskViewed.getId()); //добавляем айдишник просмотренного таска в стрингбилдер
+                fw.write(sb.toString());//записываем стрингбилдер в файл
+                System.out.println("History added to CSV file");
+            }
+            fw.write(sb.toString());
+            fw.flush();
+            fw.close();
             for (Integer taskId : idCsvList) {
                 System.out.println("idCsvList " + taskId);
             }
@@ -108,7 +115,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
         return result;
     }
 
-    public static Task taskFromString(String value) {//Нужно ли здесь разделять на три случая?
+    public Task taskFromString(String value) throws IOException {//Нужно ли здесь разделять на три случая?
         String[] taskInfo = value.split(",");
         if(TaskType.valueOf(taskInfo[1]).equals(TaskType.TASK)) {
         Task task = new Task(Integer.parseInt(taskInfo[0]), taskInfo[2], Status.valueOf(taskInfo[3]), taskInfo[4]);
@@ -123,6 +130,18 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
             Epic epic = new Epic(Integer.parseInt(taskInfo[0]), taskInfo[2], Status.valueOf(taskInfo[3]), taskInfo[4]);
             return epic;
         }
+
+        if(TaskType.valueOf(taskInfo[0]).equals(TaskType.HISTORY)) {
+            String[] values = value.split(",");
+            List<Integer> idList = new ArrayList<>(historyFromString(value));
+
+            for (Integer id : idList) {
+                super.createTask(getHistoryManager().getTaskHashMap().get(id).getData());
+            }
+
+            //надо считать всю строку истории и добавить в менеджер из мапы хистори менеджера таски, по которыми считаны айдишники
+        }
+
         System.out.println("File is empty, nothing to return");
         return null;
     }
@@ -137,11 +156,11 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
         return historyBuffer.toString();
     }
 
-    public List<Integer> historyFromString(String value) throws IOException {//этот метод будет вызываться в loadFromFile? Не пойму, зачем нужен список айдишников
+    public static List<Integer> historyFromString(String value) throws IOException {
         String[] values = value.split(",");
         List<Integer> history = new ArrayList<>(values.length);
-        for (String id : values) {
-            history.add(Integer.parseInt(id));
+        for (int i = 0; i < values.length; i++) {
+            history.add(Integer.parseInt(values[i]));
         }
         return history;
     }
@@ -175,7 +194,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
 
         FileBackedTasksManager fb2 = loadFromFile(file);
         System.out.println("Check 3: " + printAllTasks(fb2));
-        /*fb.getTaskById(task.getId()); //На данный момент вот здесь получаю NPE. Он ловит его на методе add, который находится в InMemoryHistoryManager. Не пойму, как застаить работать здесь вызов по айди
+        /*fb.getTaskById(task.getId()); //На данный момент вот здесь получаю NPE. Он ловит его на методе add, который находится в InMemoryHistoryManager. Не пойму, как заставить работать здесь вызов по айди
         */
 
     }
