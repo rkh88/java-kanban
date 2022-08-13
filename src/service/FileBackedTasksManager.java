@@ -234,7 +234,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
                     if(TaskType.valueOf(values[1]).equals(TaskType.SUBTASK)) {
                         fb.createSubtask((Subtask) taskFromString(values));
                     }
-                    System.out.println("values[0] : " + values[0] + " values[1] : " + values[1] + " values[2] : " + values[2]);
+                    System.out.println("values[0] : " + values[0] + " values[1] : " + values[1] + " values[2] : " + values[2]);//все эти выводы на печать я потом уберу, это просто для понимания состояния объектов
                     System.out.println(values.length);
                 }
 
