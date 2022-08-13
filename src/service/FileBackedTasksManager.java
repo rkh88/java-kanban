@@ -224,15 +224,15 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
                 if(values.length > 1) {
 
                     if(TaskType.valueOf(values[1]).equals(TaskType.TASK)) {
-                        fb.createTask(taskFromString(values));
+                        super.createTask(taskFromString(values));
                         System.out.println(taskFromString(values).toString());
                         System.out.println("Task from file created");
                     }
                     if(TaskType.valueOf(values[1]).equals(TaskType.EPIC)) {
-                        fb.createEpic((Epic) taskFromString(values));
+                        super.createEpic((Epic) taskFromString(values));
                     }
                     if(TaskType.valueOf(values[1]).equals(TaskType.SUBTASK)) {
-                        fb.createSubtask((Subtask) taskFromString(values));
+                        super.createSubtask((Subtask) taskFromString(values));
                     }
                     System.out.println("values[0] : " + values[0] + " values[1] : " + values[1] + " values[2] : " + values[2]);//все эти выводы на печать я потом уберу, это просто для понимания состояния объектов
                     System.out.println(values.length);
@@ -283,7 +283,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
 
         FileBackedTasksManager fb2 = new FileBackedTasksManager(file);
         fb2.loadFromFile(file);
-        System.out.println(fb2.getAllTasks());//почему-то не создаются таски при подгрузке loadFromFile. Не пойму, почему
+        System.out.println(fb2.getAllTasks());
         System.out.println(fb2.getHistoryManager().getTaskHashMap());
         System.out.println("Check 4: ");
         printAllTasks(fb2);
