@@ -154,8 +154,15 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
     }
 
     public static String taskToString(Task task) {
+        if(task.getClass().equals(Task.class) || task.getClass().equals(Epic.class)) {
             String result = task.getId() + "," + task.typeToString() + "," + task.getName() + "," + task.getStatus() + "," + task.getDescription();
             return result;
+        }
+        if(task.getClass().equals(Subtask.class)) {
+            String result = task.getId() + "," + task.typeToString() + "," + task.getName() + "," + task.getStatus() + "," + task.getDescription() + ((Subtask) task).getEpic().getId();
+            return result;
+        }
+        return "No task";
     }
 
     public static String subtaskToString(Subtask subtask) {
@@ -163,37 +170,21 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
         return result;
     }
 
-    public Task taskFromString(String value) throws IOException {
-        String[] taskInfo = value.split(",");
-        if(TaskType.valueOf(taskInfo[1]).equals(TaskType.TASK)) {
-        Task task = new Task(Integer.parseInt(taskInfo[0]), taskInfo[2], Status.valueOf(taskInfo[3]), taskInfo[4]);
+    public Task taskFromString(String[] value) throws IOException {
+        if(TaskType.valueOf(value[1]).equals(TaskType.TASK)) {
+        Task task = new Task(Integer.parseInt(value[0]), value[2], Status.valueOf(value[3]), value[4]);
         return task;
         }
-        if(TaskType.valueOf(taskInfo[1]).equals(TaskType.SUBTASK)) {
-            Subtask subtask = new Subtask(Integer.parseInt(taskInfo[0]), taskInfo[2], Status.valueOf(taskInfo[3]), taskInfo[4], super.getAllEpics().get(taskInfo[5]));
+        if(TaskType.valueOf(value[1]).equals(TaskType.SUBTASK)) {
+            Subtask subtask = new Subtask(Integer.parseInt(value[0]), value[2], Status.valueOf(value[3]), value[4], super.getAllEpics().get(value[5]));
             return subtask;
         }
 
-        if(TaskType.valueOf(taskInfo[1]).equals(TaskType.EPIC)) {
-            Epic epic = new Epic(Integer.parseInt(taskInfo[0]), taskInfo[2], Status.valueOf(taskInfo[3]), taskInfo[4]);
+        if(TaskType.valueOf(value[1]).equals(TaskType.EPIC)) {
+            Epic epic = new Epic(Integer.parseInt(value[0]), value[2], Status.valueOf(value[3]), value[4]);
             return epic;
         }
 
-        if(!TaskType.valueOf(taskInfo[1]).equals(TaskType.TASK) && !TaskType.valueOf(taskInfo[1]).equals(TaskType.SUBTASK) && !TaskType.valueOf(taskInfo[1]).equals(TaskType.EPIC) && !taskInfo[0].isEmpty()) {
-
-            for (int i = 0; i < taskInfo.length; i++) {
-                if(super.getAllTasks().containsKey(Integer.parseInt(taskInfo[i]))) {
-                    super.getTaskById(Integer.parseInt(taskInfo[i]));
-                }
-                if(super.getAllSubtasks().containsKey(Integer.parseInt(taskInfo[i]))) {
-                    super.getSubtaskById(Integer.parseInt(taskInfo[i]));
-                }
-                if(super.getAllEpics().containsKey(Integer.parseInt(taskInfo[i]))) {
-                    super.getEpicById(Integer.parseInt(taskInfo[i]));
-                }
-            }
-
-        }
         System.out.println("File is empty, nothing to return");
         return null;
     }
@@ -226,22 +217,44 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
     public FileBackedTasksManager loadFromFile(File file) throws IOException {
         FileBackedTasksManager fb = new FileBackedTasksManager(file);
         try (BufferedReader br = new BufferedReader(new FileReader("history.csv"))) {
+            br.readLine();
             while (br.ready()) {
                 String[] values = br.readLine().split(",");
-                if(TaskType.valueOf(values[1]).equals(TaskType.TASK) || TaskType.valueOf(values[1]).equals(TaskType.SUBTASK) || TaskType.valueOf(values[1]).equals(TaskType.EPIC)) {// Я вот тут получаю IllegalArgumentExpression из=за проблем со сравнением TaskType, как я понимаю
-                    Task task = taskFromString(br.readLine());
-                    fb.createTask(task);
+                if(values.length > 1) {
+
+                    if(TaskType.valueOf(values[1]).equals(TaskType.TASK)) {
+                        fb.createTask(taskFromString(values));
+                    }
+                    if(TaskType.valueOf(values[1]).equals(TaskType.EPIC)) {
+                        fb.createEpic((Epic) taskFromString(values));
+                    }
+                    if(TaskType.valueOf(values[1]).equals(TaskType.SUBTASK)) {
+                        fb.createSubtask((Subtask) taskFromString(values));
+                    }
+                    System.out.println("values[0] : " + values[0] + " values[1] : " + values[1] + " values[2] : " + values[2]);
+                    System.out.println(values.length);
                 }
-                if(values.length == 0) {
-                    br.readLine();
-                    String[] idList = br.readLine().split(",");
-                    for (int i = 0; i < idList.length; i++) {
-                        historyFromString(idList[i]);
+
+                if(values.length == 1) {
+                    System.out.println(values[0]);
+                    String idString = br.readLine();
+                    System.out.println("idString: " + idString);
+                    List<Integer> idList = historyFromString(idString);
+                    for (int i = 0; i < idList.size(); i++) {
+                        if(super.getAllTasks().containsKey(idList.get(i))) {
+                            super.getTaskById(idList.get(i));
+                        }
+                        if(super.getAllSubtasks().containsKey(idList.get(i))) {
+                            super.getSubtaskById(idList.get(i));
+                        }
+                        if(super.getAllEpics().containsKey(idList.get(i))) {
+                            super.getEpicById(idList.get(i));
+                        }
                     }
                 }
-
-
             }
+            System.out.println(getAllTasks());
+            System.out.println(super.getHistoryManager().getTaskHashMap());
         } catch (IOException e) {
             throw new ManagerSaveException("Can't read form file: " + file.getName(), e);
         }
@@ -259,25 +272,25 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
         fb1.createTask(task);
         fb1.createEpic(epic);
         fb1.createSubtask(subtask);
-        fb1.getTaskById(task.getId(1));
-        fb1.getTaskById(task.getId(2));
-        System.out.println("Check 1: " + printAllTasks(fb1));
+        fb1.getTaskById(1);
+        fb1.getTaskById(2);
+        System.out.println("Check 1: ");
+        printAllTasks(fb1);
         System.out.println("Check 2: " + fb1.historyToString(fb1.getHistoryManager()));
         System.out.println("Check 3: " + fb1.getHistoryManager().getTaskHashMap().toString());
 
         FileBackedTasksManager fb2 = new FileBackedTasksManager(file);
         fb2.loadFromFile(file);
-        System.out.println("Check 4: " + printAllTasks(fb2));
-        fb1.getTaskById(task.getId());
+        System.out.println("Check 4: ");
+        printAllTasks(fb2);
 
 
     }
 
-    public static boolean printAllTasks (FileBackedTasksManager fb) {
+    public static void printAllTasks (FileBackedTasksManager fb) {
         for(Integer key : fb.getAllTasks().keySet()) {
             System.out.println(fb.getAllTasks().get(key).toString());
         }
-        return true;
     }
 
 }
