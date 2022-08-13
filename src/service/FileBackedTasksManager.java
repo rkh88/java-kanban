@@ -280,7 +280,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
 
         FileBackedTasksManager fb2 = new FileBackedTasksManager(file);
         fb2.loadFromFile(file);
-        System.out.println(fb2.getAllTasks());
+        System.out.println(fb2.getAllTasks());//почему-то не создаются таски при подгрузке loadFromFile. Не пойму, почему
         System.out.println(fb2.getHistoryManager().getTaskHashMap());
         System.out.println("Check 4: ");
         printAllTasks(fb2);
