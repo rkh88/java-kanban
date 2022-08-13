@@ -6,6 +6,7 @@ import tasks.Subtask;
 import tasks.Task;
 
 import java.io.*;
+import java.sql.SQLOutput;
 import java.util.*;
 
 public class FileBackedTasksManager extends InMemoryTaskManager {
@@ -159,14 +160,14 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
             return result;
         }
         if(task.getClass().equals(Subtask.class)) {
-            String result = task.getId() + "," + task.typeToString() + "," + task.getName() + "," + task.getStatus() + "," + task.getDescription() + ((Subtask) task).getEpic().getId();
+            String result = task.getId() + "," + task.typeToString() + "," + task.getName() + "," + task.getStatus() + "," + task.getDescription() + "," + ((Subtask) task).getEpic().getId();
             return result;
         }
         return "No task";
     }
 
     public static String subtaskToString(Subtask subtask) {
-        String result = subtask.getId() + "," + subtask.typeToString() + "," + subtask.getName() + "," + subtask.getStatus() + "," + subtask.getDescription() + subtask.getEpic().getId();
+        String result = subtask.getId() + "," + subtask.typeToString() + "," + subtask.getName() + "," + subtask.getStatus() + "," + subtask.getDescription() + "," + subtask.getEpic().getId();
         return result;
     }
 
@@ -224,6 +225,8 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
 
                     if(TaskType.valueOf(values[1]).equals(TaskType.TASK)) {
                         fb.createTask(taskFromString(values));
+                        System.out.println(taskFromString(values).toString());
+                        System.out.println("Task from file created");
                     }
                     if(TaskType.valueOf(values[1]).equals(TaskType.EPIC)) {
                         fb.createEpic((Epic) taskFromString(values));
