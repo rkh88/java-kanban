@@ -253,8 +253,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
                     }
                 }
             }
-            System.out.println(getAllTasks());
-            System.out.println(super.getHistoryManager().getTaskHashMap());
+
         } catch (IOException e) {
             throw new ManagerSaveException("Can't read form file: " + file.getName(), e);
         }
@@ -281,6 +280,8 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
 
         FileBackedTasksManager fb2 = new FileBackedTasksManager(file);
         fb2.loadFromFile(file);
+        System.out.println(fb2.getAllTasks());
+        System.out.println(fb2.getHistoryManager().getTaskHashMap());
         System.out.println("Check 4: ");
         printAllTasks(fb2);
 
