@@ -239,7 +239,6 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
                 }
 
                 if(values.length == 1) {
-                    System.out.println(values[0]);
                     String idString = br.readLine();
                     System.out.println("idString: " + idString);
                     List<Integer> idList = historyFromString(idString);
