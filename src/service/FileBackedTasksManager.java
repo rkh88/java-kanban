@@ -120,13 +120,13 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
         return result;
     }
 
-    public Task taskFromString(String[] value) throws IOException {
+    public static Task taskFromString(String[] value, TaskManager taskManager) {
         if(TaskType.valueOf(value[1]).equals(TaskType.TASK)) {
         Task task = new Task(Integer.parseInt(value[0]), value[2], Status.valueOf(value[3]), value[4]);
         return task;
         }
         if(TaskType.valueOf(value[1]).equals(TaskType.SUBTASK)) {
-            Subtask subtask = new Subtask(Integer.parseInt(value[0]), value[2], Status.valueOf(value[3]), value[4], super.getAllEpics().get(value[5]));
+            Subtask subtask = new Subtask(Integer.parseInt(value[0]), value[2], Status.valueOf(value[3]), value[4], taskManager.getAllEpics().get(value[5]));
             return subtask;
         }
 
@@ -139,7 +139,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
         return null;
     }
 
-    public String historyToString(HistoryManager manager) {
+    public static String historyToString(HistoryManager manager) {
 
         final List<Task> history = manager.getHistory();
         if (history.isEmpty()) {
@@ -173,13 +173,13 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
                 if(values.length > 1) {
 
                     if(TaskType.valueOf(values[1]).equals(TaskType.TASK)) {
-                        fb.createTask(fb.taskFromString(values));
+                        fb.createTask(FileBackedTasksManager.taskFromString(values, fb));
                     }
                     if(TaskType.valueOf(values[1]).equals(TaskType.EPIC)) {
-                       fb.createEpic((Epic) fb.taskFromString(values));
+                       fb.createEpic((Epic) FileBackedTasksManager.taskFromString(values, fb));
                     }
                     if(TaskType.valueOf(values[1]).equals(TaskType.SUBTASK)) {
-                        fb.createSubtask((Subtask) fb.taskFromString(values));
+                        fb.createSubtask((Subtask) FileBackedTasksManager.taskFromString(values, fb));
                     }
                 }
 
