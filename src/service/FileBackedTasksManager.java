@@ -226,7 +226,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
 
         FileBackedTasksManager fb2 = new FileBackedTasksManager(file);
         fb2.loadFromFile(file);
-        System.out.println(fb2.getAllTasks());
+        System.out.println(fb2.getAllTasks());//вот начиная с этого места не отрабатывает как надо
         System.out.println(fb2.getHistoryManager().getTaskHashMap());
         System.out.println("Check 4: ");
         printAllTasks(fb2);
