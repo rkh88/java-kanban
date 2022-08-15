@@ -6,7 +6,6 @@ import tasks.Subtask;
 import tasks.Task;
 
 import java.io.*;
-import java.sql.SQLOutput;
 import java.util.*;
 
 public class FileBackedTasksManager extends InMemoryTaskManager {
@@ -20,113 +19,63 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
     @Override
     public Task createTask(Task task){
         super.createTask(task);
-        try {
-            save();
-        } catch (ManagerSaveException e) {
-            e.printStackTrace();
-        }
+        save();
         return task;
     }
 
     @Override
     public Epic createEpic(Epic epic){
         super.createTask(epic);
-        try {
-            save();
-        } catch (ManagerSaveException e) {
-            e.printStackTrace();
-        }
+        save();
         return epic;
     }
 
     @Override
     public Subtask createSubtask(Subtask subtask){
         super.createTask(subtask);
-        try {
-            save();
-        } catch (ManagerSaveException e) {
-            e.printStackTrace();
-        }
+        save();
         return subtask;
     }
 
     @Override
     public Task getTaskById(int id){
-        Task task = null;
-        task = super.getTaskById(id);
-        try {
-            save();
-        } catch (ManagerSaveException e) {
-            e.printStackTrace();
-        }
+        Task task = super.getTaskById(id);
+        save();
         return task;
     }
 
     @Override
     public Subtask getSubtaskById(int id){
         Subtask subtask = super.getSubtaskById(id);
-        try {
-            save();
-        } catch (ManagerSaveException e) {
-            e.printStackTrace();
-        }
         return subtask;
     }
 
     @Override
     public Epic getEpicById(int id){
         Epic epic = super.getEpicById(id);
-        try {
-            save();
-        } catch (ManagerSaveException e) {
-            e.printStackTrace();
-        }
+        save();
         return epic;
     }
 
     @Override
     public void deleteTaskById(int id){
-        try {
-            super.deleteTaskById(id);
-        } catch (ManagerSaveException e) {
-            e.printStackTrace();
-        }
-        try {
-            save();
-        } catch (ManagerSaveException e) {
-            e.printStackTrace();
-        }
+        super.deleteTaskById(id);
+        save();
     }
 
     @Override
     public void deleteSubtaskById(int id){
-        try {
-            super.deleteSubtaskById(id);
-        } catch (ManagerSaveException e) {
-            e.printStackTrace();
-        }
-        try {
-            save();
-        } catch (ManagerSaveException e) {
-            e.printStackTrace();
-        }
+        super.deleteSubtaskById(id);
+        save();
     }
 
     @Override
     public void deleteEpicById(int id){
-        try {
-            super.deleteEpicById(id);
-        } catch (ManagerSaveException e) {
-            e.printStackTrace();
-        }
-        try {
-            save();
-        } catch (ManagerSaveException e) {
-            e.printStackTrace();
-        }
+        super.deleteEpicById(id);
+        save();
     }
 
-    public void save() throws ManagerSaveException {
+    public void save() {
 
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
             writer.write("id,type,name,status,description,epic");
@@ -215,7 +164,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
         return history;
     }
 
-    public FileBackedTasksManager loadFromFile(File file) throws IOException {
+    public FileBackedTasksManager loadFromFile(File file) {//Илья, привет! Я не понимаю, как правильно static реализовать. Он тогда просит,чтобы все было static - createTask, потом все методы в InMemoryTaskManager. Как это правильно должно быть?
         FileBackedTasksManager fb = new FileBackedTasksManager(file);
         try (BufferedReader br = new BufferedReader(new FileReader("history.csv"))) {
             br.readLine();
@@ -225,8 +174,6 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
 
                     if(TaskType.valueOf(values[1]).equals(TaskType.TASK)) {
                         super.createTask(taskFromString(values));
-                        System.out.println(taskFromString(values).toString());
-                        System.out.println("Task from file created");
                     }
                     if(TaskType.valueOf(values[1]).equals(TaskType.EPIC)) {
                         super.createEpic((Epic) taskFromString(values));
@@ -234,13 +181,10 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
                     if(TaskType.valueOf(values[1]).equals(TaskType.SUBTASK)) {
                         super.createSubtask((Subtask) taskFromString(values));
                     }
-                    System.out.println("values[0] : " + values[0] + " values[1] : " + values[1] + " values[2] : " + values[2]);//все эти выводы на печать я потом уберу, это просто для понимания состояния объектов
-                    System.out.println(values.length);
                 }
 
                 if(values.length == 1) {
                     String idString = br.readLine();
-                    System.out.println("idString: " + idString);
                     List<Integer> idList = historyFromString(idString);
                     for (int i = 0; i < idList.size(); i++) {
                         if(super.getAllTasks().containsKey(idList.get(i))) {

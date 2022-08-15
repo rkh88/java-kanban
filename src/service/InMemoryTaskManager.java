@@ -71,7 +71,6 @@ public class InMemoryTaskManager implements TaskManager {
         task.setId(counter);
         getAllTasks().put(counter, task);
         counter++;
-        System.out.println("Task " + task.toString() + " was created");
         return task;
     }
 
@@ -80,7 +79,6 @@ public class InMemoryTaskManager implements TaskManager {
         epic.setId(counter);
         getAllEpics().put(counter, epic);
         counter++;
-        System.out.println("Epic " + epic.toString() + " was created");
         return epic;
     }
 
@@ -91,7 +89,6 @@ public class InMemoryTaskManager implements TaskManager {
         subtask.getEpic().addSubtask(subtask);
         checkEpicStatus(subtask.getEpic());
         counter++;
-        System.out.println("Subtask " + subtask.toString() + " was created");
         return subtask;
     }
 
@@ -153,11 +150,9 @@ public class InMemoryTaskManager implements TaskManager {
     public void deleteTaskById(int id) throws ManagerSaveException {
         if(historyManager.getHistory().contains(getAllTasks().get(id))) {
             historyManager.remove(id);
-            System.out.println("Task with id " + id + " was removed from history");
         }
         if(getAllTasks().containsKey(id)) {
             getAllTasks().remove(id);
-            System.out.println("Task with id " + id + " was removed from initial TaskHashMap");
         } else {
             System.out.println("No such task");
         }
@@ -167,12 +162,10 @@ public class InMemoryTaskManager implements TaskManager {
     public void deleteSubtaskById(int id) throws ManagerSaveException {
         if(historyManager.getHistory().contains(getAllSubtasks().get(id))) {
             historyManager.remove(id);
-            System.out.println("Subtask with id " + id + " was removed from history");
         }
         if(getAllSubtasks().containsKey(id)) {
             getAllSubtasks().remove(id);
             checkEpicStatus(getAllSubtasks().get(id).getEpic());
-            System.out.println("Subtask with id " + id + " was removed from initial TaskHashMap");
         } else {
             System.out.println("No such subtask");
         }
@@ -183,7 +176,7 @@ public class InMemoryTaskManager implements TaskManager {
         if(historyManager.getHistory().size() != 0 && historyManager.getHistory().contains(getAllEpics().get(id))) {
             historyManager.remove(id);
             getAllEpics().remove(id);
-            System.out.println("Epic with id " + id + " was removed from history and from initial TaskHashMap");
+
             ArrayList<Integer> keysToDelete = new ArrayList<>();
             for(Integer key : getAllSubtasks().keySet()) { // если удаляется эпик, сначала надо удалить все его сабтаски
                 if(getAllSubtasks().get(key).getEpic().equals(getAllEpics().get(id))) {
@@ -194,7 +187,6 @@ public class InMemoryTaskManager implements TaskManager {
                 historyManager.remove(key);
                 getAllSubtasks().remove(key);
             }
-            System.out.println("All epic's subtasks were removed from history and from initial TaskHashMap");
         }
 
         if(getAllEpics().containsKey(id)) {
@@ -208,7 +200,6 @@ public class InMemoryTaskManager implements TaskManager {
                 getAllSubtasks().remove(key);
             }
             getAllEpics().remove(id);
-            System.out.println("Epic with id " + id + " and all its subtasks were removed from initial TaskHashMap");
         } else {
             System.out.println("No such epic");
         }
