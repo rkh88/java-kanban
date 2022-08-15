@@ -164,7 +164,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
         return history;
     }
 
-    public FileBackedTasksManager loadFromFile(File file) {//Илья, привет! Я не понимаю, как правильно static реализовать. Он тогда просит,чтобы все было static - createTask, потом все методы в InMemoryTaskManager. Как это правильно должно быть?
+    public static FileBackedTasksManager loadFromFile(File file) {
         FileBackedTasksManager fb = new FileBackedTasksManager(file);
         try (BufferedReader br = new BufferedReader(new FileReader("history.csv"))) {
             br.readLine();
@@ -173,13 +173,13 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
                 if(values.length > 1) {
 
                     if(TaskType.valueOf(values[1]).equals(TaskType.TASK)) {
-                        super.createTask(taskFromString(values));
+                        fb.createTask(fb.taskFromString(values));
                     }
                     if(TaskType.valueOf(values[1]).equals(TaskType.EPIC)) {
-                        super.createEpic((Epic) taskFromString(values));
+                       fb.createEpic((Epic) fb.taskFromString(values));
                     }
                     if(TaskType.valueOf(values[1]).equals(TaskType.SUBTASK)) {
-                        super.createSubtask((Subtask) taskFromString(values));
+                        fb.createSubtask((Subtask) fb.taskFromString(values));
                     }
                 }
 
@@ -187,14 +187,14 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
                     String idString = br.readLine();
                     List<Integer> idList = historyFromString(idString);
                     for (int i = 0; i < idList.size(); i++) {
-                        if(super.getAllTasks().containsKey(idList.get(i))) {
-                            super.getTaskById(idList.get(i));
+                        if(fb.getAllTasks().containsKey(idList.get(i))) {
+                            fb.getTaskById(idList.get(i));
                         }
-                        if(super.getAllSubtasks().containsKey(idList.get(i))) {
-                            super.getSubtaskById(idList.get(i));
+                        if(fb.getAllSubtasks().containsKey(idList.get(i))) {
+                            fb.getSubtaskById(idList.get(i));
                         }
-                        if(super.getAllEpics().containsKey(idList.get(i))) {
-                            super.getEpicById(idList.get(i));
+                        if(fb.getAllEpics().containsKey(idList.get(i))) {
+                            fb.getEpicById(idList.get(i));
                         }
                     }
                 }
