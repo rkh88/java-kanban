@@ -203,12 +203,10 @@ public class InMemoryTaskManager implements TaskManager {
         } else {
             System.out.println("No such epic");
         }
-
     }
 
     @Override
     public ArrayList<Subtask> getSubtasksListByEpic(Epic epic) {
         return epic.getSubtasks();
     }
-
 }
