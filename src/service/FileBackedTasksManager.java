@@ -17,60 +17,60 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
     }
 
     @Override
-    public Task createTask(Task task){
+    public Task createTask(Task task) {
         super.createTask(task);
         save();
         return task;
     }
 
     @Override
-    public Epic createEpic(Epic epic){
+    public Epic createEpic(Epic epic) {
         super.createTask(epic);
         save();
         return epic;
     }
 
     @Override
-    public Subtask createSubtask(Subtask subtask){
+    public Subtask createSubtask(Subtask subtask) {
         super.createTask(subtask);
         save();
         return subtask;
     }
 
     @Override
-    public Task getTaskById(int id){
+    public Task getTaskById(int id) {
         Task task = super.getTaskById(id);
         save();
         return task;
     }
 
     @Override
-    public Subtask getSubtaskById(int id){
+    public Subtask getSubtaskById(int id) {
         Subtask subtask = super.getSubtaskById(id);
         return subtask;
     }
 
     @Override
-    public Epic getEpicById(int id){
+    public Epic getEpicById(int id) {
         Epic epic = super.getEpicById(id);
         save();
         return epic;
     }
 
     @Override
-    public void deleteTaskById(int id){
+    public void deleteTaskById(int id) {
         super.deleteTaskById(id);
         save();
     }
 
     @Override
-    public void deleteSubtaskById(int id){
+    public void deleteSubtaskById(int id) {
         super.deleteSubtaskById(id);
         save();
     }
 
     @Override
-    public void deleteEpicById(int id){
+    public void deleteEpicById(int id) {
         super.deleteEpicById(id);
         save();
     }
@@ -105,22 +105,22 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
     public static String taskToString(Task task) {
         StringBuilder sb = new StringBuilder();
         sb.append(task.getId() + "," + task.typeToString() + "," + task.getName() + "," + task.getStatus() + "," + task.getDescription());
-        if(task.getClass().equals(Subtask.class)) {
+        if (task.getClass().equals(Subtask.class)) {
             sb.append("," + ((Subtask) task).getEpic().getId());
         }
         return sb.toString();
     }
 
     public static Task taskFromString(String[] value, TaskManager taskManager) {
-        if(TaskType.valueOf(value[1]).equals(TaskType.TASK)) {
-        Task task = new Task(Integer.parseInt(value[0]), value[2], Status.valueOf(value[3]), value[4]);
-        return task;
+        if (TaskType.valueOf(value[1]).equals(TaskType.TASK)) {
+            Task task = new Task(Integer.parseInt(value[0]), value[2], Status.valueOf(value[3]), value[4]);
+            return task;
         }
-        if(TaskType.valueOf(value[1]).equals(TaskType.SUBTASK)) {
+        if (TaskType.valueOf(value[1]).equals(TaskType.SUBTASK)) {
             Subtask subtask = new Subtask(Integer.parseInt(value[0]), value[2], Status.valueOf(value[3]), value[4], taskManager.getAllEpics().get(value[5]));
             return subtask;
         }
-        if(TaskType.valueOf(value[1]).equals(TaskType.EPIC)) {
+        if (TaskType.valueOf(value[1]).equals(TaskType.EPIC)) {
             Epic epic = new Epic(Integer.parseInt(value[0]), value[2], Status.valueOf(value[3]), value[4]);
             return epic;
         }
@@ -158,28 +158,28 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
             br.readLine();
             while (br.ready()) {
                 String[] values = br.readLine().split(",");
-                if(values.length > 1) {
-                    if(TaskType.valueOf(values[1]).equals(TaskType.TASK)) {
+                if (values.length > 1) {
+                    if (TaskType.valueOf(values[1]).equals(TaskType.TASK)) {
                         fb.createTask(FileBackedTasksManager.taskFromString(values, fb));
                     }
-                    if(TaskType.valueOf(values[1]).equals(TaskType.EPIC)) {
-                       fb.createEpic((Epic) FileBackedTasksManager.taskFromString(values, fb));
+                    if (TaskType.valueOf(values[1]).equals(TaskType.EPIC)) {
+                        fb.createEpic((Epic) FileBackedTasksManager.taskFromString(values, fb));
                     }
-                    if(TaskType.valueOf(values[1]).equals(TaskType.SUBTASK)) {
+                    if (TaskType.valueOf(values[1]).equals(TaskType.SUBTASK)) {
                         fb.createSubtask((Subtask) FileBackedTasksManager.taskFromString(values, fb));
                     }
                 }
-                if(values.length == 1) {
+                if (values.length == 1) {
                     String idString = br.readLine();
                     List<Integer> idList = historyFromString(idString);
                     for (int i = 0; i < idList.size(); i++) {
-                        if(fb.getAllTasks().containsKey(idList.get(i))) {
+                        if (fb.getAllTasks().containsKey(idList.get(i))) {
                             fb.getTaskById(idList.get(i));
                         }
-                        if(fb.getAllSubtasks().containsKey(idList.get(i))) {
+                        if (fb.getAllSubtasks().containsKey(idList.get(i))) {
                             fb.getSubtaskById(idList.get(i));
                         }
-                        if(fb.getAllEpics().containsKey(idList.get(i))) {
+                        if (fb.getAllEpics().containsKey(idList.get(i))) {
                             fb.getEpicById(idList.get(i));
                         }
                     }
@@ -190,7 +190,6 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
         }
         return fb;
     }
-
 
 
     public static void main(String[] args) throws IOException {
@@ -208,15 +207,16 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
         printAllTasks(fb1);
         System.out.println("Check 2: " + fb1.historyToString(fb1.getHistoryManager()));
         System.out.println("Check 3: " + fb1.getHistoryManager().getTaskHashMap().toString());
-        FileBackedTasksManager fb2 = loadFromFile(file);;
+        FileBackedTasksManager fb2 = loadFromFile(file);
+        ;
         System.out.println(fb2.getAllTasks());
         System.out.println(fb2.getHistoryManager().getTaskHashMap());
         System.out.println("Check 4: ");
         printAllTasks(fb2);
     }
 
-    public static void printAllTasks (FileBackedTasksManager fb) {
-        for(Integer key : fb.getAllTasks().keySet()) {
+    public static void printAllTasks(FileBackedTasksManager fb) {
+        for (Integer key : fb.getAllTasks().keySet()) {
             System.out.println(fb.getAllTasks().get(key).toString());
         }
     }

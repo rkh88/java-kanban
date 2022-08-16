@@ -58,13 +58,13 @@ public class Main {
     }
 
     public static void printTaskHistory(HistoryManager hm) {
-        for(Task task : hm.getHistory()) {
+        for (Task task : hm.getHistory()) {
             System.out.println("Task history: id " + task.getId() + " " + task.toString());
         }
     }
 
     public static void printTaskHashMap(HistoryManager hm) {
-        for(Integer id : hm.getTaskHashMap().keySet()) {
+        for (Integer id : hm.getTaskHashMap().keySet()) {
             System.out.println("Id " + id + ":" + hm.getTaskHashMap().get(id).toString());
         }
     }

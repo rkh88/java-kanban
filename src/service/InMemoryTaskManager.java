@@ -37,16 +37,22 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-    public void deleteAllTasks() { getAllTasks().clear(); }
+    public void deleteAllTasks() {
+        getAllTasks().clear();
+    }
 
     @Override
-    public void deleteAllEpics() { getAllEpics().clear(); }
+    public void deleteAllEpics() {
+        getAllEpics().clear();
+    }
 
     @Override
-    public void deleteAllSubtasks() { getAllSubtasks().clear(); }
+    public void deleteAllSubtasks() {
+        getAllSubtasks().clear();
+    }
 
     @Override
-    public Task getTaskById(int id){
+    public Task getTaskById(int id) {
         Task task = getAllTasks().get(id);
         historyManager.add(task);
         return task;
@@ -93,20 +99,20 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-    public void checkEpicStatus (Epic epic) {
+    public void checkEpicStatus(Epic epic) {
         int epicDone = 0;
         int epicNew = 0;
-        for(Subtask currentSubtask : epic.getSubtasks()) {
-            if(currentSubtask.getStatus() == Status.DONE) {
+        for (Subtask currentSubtask : epic.getSubtasks()) {
+            if (currentSubtask.getStatus() == Status.DONE) {
                 epicDone++;
             }
         }
-        for(Subtask currentSubtask : epic.getSubtasks()) {
-            if(currentSubtask.getStatus() == Status.NEW) {
+        for (Subtask currentSubtask : epic.getSubtasks()) {
+            if (currentSubtask.getStatus() == Status.NEW) {
                 epicNew++;
             }
         }
-        if (epicDone == epic.getSubtasks().size() || epicNew == epic.getSubtasks().size() || epic.getSubtasks().size() == 0){
+        if (epicDone == epic.getSubtasks().size() || epicNew == epic.getSubtasks().size() || epic.getSubtasks().size() == 0) {
             if (epicDone == epic.getSubtasks().size()) {
                 epic.setStatus(Status.DONE);
             }
@@ -126,14 +132,14 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public void updateTask(Task task) {
-        if(getAllTasks().containsKey(task.getId())) {
+        if (getAllTasks().containsKey(task.getId())) {
             getAllTasks().put(task.getId(), task);
         }
     }
 
     @Override
     public void updateSubtask(Subtask subtask) {
-        if(getAllSubtasks().containsKey(subtask.getId())) {
+        if (getAllSubtasks().containsKey(subtask.getId())) {
             getAllSubtasks().put(subtask.getId(), subtask);
             checkEpicStatus(getAllSubtasks().get(subtask.getId()).getEpic());
         }
@@ -141,17 +147,17 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public void updateEpic(Epic epic) {
-        if(getAllEpics().containsKey(epic.getId())) {
+        if (getAllEpics().containsKey(epic.getId())) {
             getAllEpics().put(epic.getId(), epic);
         }
     }
 
     @Override
     public void deleteTaskById(int id) throws ManagerSaveException {
-        if(historyManager.getHistory().contains(getAllTasks().get(id))) {
+        if (historyManager.getHistory().contains(getAllTasks().get(id))) {
             historyManager.remove(id);
         }
-        if(getAllTasks().containsKey(id)) {
+        if (getAllTasks().containsKey(id)) {
             getAllTasks().remove(id);
         } else {
             System.out.println("No such task");
@@ -160,10 +166,10 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public void deleteSubtaskById(int id) throws ManagerSaveException {
-        if(historyManager.getHistory().contains(getAllSubtasks().get(id))) {
+        if (historyManager.getHistory().contains(getAllSubtasks().get(id))) {
             historyManager.remove(id);
         }
-        if(getAllSubtasks().containsKey(id)) {
+        if (getAllSubtasks().containsKey(id)) {
             getAllSubtasks().remove(id);
             checkEpicStatus(getAllSubtasks().get(id).getEpic());
         } else {
@@ -173,30 +179,30 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public void deleteEpicById(int id) throws ManagerSaveException { //тут надо по DRY все сделать, пока думаю как
-        if(historyManager.getHistory().size() != 0 && historyManager.getHistory().contains(getAllEpics().get(id))) {
+        if (historyManager.getHistory().size() != 0 && historyManager.getHistory().contains(getAllEpics().get(id))) {
             historyManager.remove(id);
             getAllEpics().remove(id);
 
             ArrayList<Integer> keysToDelete = new ArrayList<>();
-            for(Integer key : getAllSubtasks().keySet()) { // если удаляется эпик, сначала надо удалить все его сабтаски
-                if(getAllSubtasks().get(key).getEpic().equals(getAllEpics().get(id))) {
+            for (Integer key : getAllSubtasks().keySet()) { // если удаляется эпик, сначала надо удалить все его сабтаски
+                if (getAllSubtasks().get(key).getEpic().equals(getAllEpics().get(id))) {
                     keysToDelete.add(key);// избегаю concurrent modification exception
                 }
             }
-            for(Integer key : keysToDelete){
+            for (Integer key : keysToDelete) {
                 historyManager.remove(key);
                 getAllSubtasks().remove(key);
             }
         }
 
-        if(getAllEpics().containsKey(id)) {
+        if (getAllEpics().containsKey(id)) {
             ArrayList<Integer> keysToDelete = new ArrayList<>();
-            for(Integer key : getAllSubtasks().keySet()) {
-                if(getAllSubtasks().get(key).getEpic().equals(getAllEpics().get(id))) {
+            for (Integer key : getAllSubtasks().keySet()) {
+                if (getAllSubtasks().get(key).getEpic().equals(getAllEpics().get(id))) {
                     keysToDelete.add(key);
                 }
             }
-            for(Integer key : keysToDelete){
+            for (Integer key : keysToDelete) {
                 getAllSubtasks().remove(key);
             }
             getAllEpics().remove(id);

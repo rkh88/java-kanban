@@ -1,6 +1,7 @@
 package service;
 
 import tasks.Task;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Objects;
@@ -39,14 +40,14 @@ public class InMemoryHistoryManager implements HistoryManager {
             Node oldPrevious = node.getPreviousNode();
             Node oldNext = node.getNextNode();
             if (node == head) {
-                if(oldNext == null) {
+                if (oldNext == null) {
                     head = null;
                     tail = null;
                 } else {
                     oldNext.setPreviousNode(null);
                     head = oldNext;
                 }
-            } else if(oldNext != null) {
+            } else if (oldNext != null) {
                 oldPrevious.setNextNode(oldNext);
                 oldNext.setPreviousNode(oldPrevious);
             } else {
@@ -117,9 +118,9 @@ public class InMemoryHistoryManager implements HistoryManager {
 
     private ArrayList<Task> getAllTasks() {
         ArrayList<Task> taskHistory = new ArrayList<>();
-        if(taskCustomLinkedList.getHead() == null){
+        if (taskCustomLinkedList.getHead() == null) {
             return taskHistory;
-        }else {
+        } else {
             Node currentNode = taskCustomLinkedList.getHead();
             while (currentNode != null) {
                 taskHistory.add(currentNode.getData());
@@ -132,7 +133,7 @@ public class InMemoryHistoryManager implements HistoryManager {
 
     @Override
     public void add(Task task) {
-        if(taskHashMap.containsKey(task.getId())) {
+        if (taskHashMap.containsKey(task.getId())) {
             taskCustomLinkedList.removeNode(taskHashMap.get(task.getId()));
         }
         taskCustomLinkedList.insert(task);
