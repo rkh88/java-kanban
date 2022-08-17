@@ -103,12 +103,9 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
     }
 
     public static String taskToString(Task task) {
-        StringBuilder sb = new StringBuilder();
-        sb.append(task.getId() + "," + task.typeToString() + "," + task.getName() + "," + task.getStatus() + "," + task.getDescription());
-        if (task.getClass().equals(Subtask.class)) {
-            sb.append("," + ((Subtask) task).getEpic().getId());
-        }
-        return sb.toString();
+        String result;
+        result = task.getId() + "," + task.typeToString() + "," + task.getName() + "," + task.getStatus() + "," + task.getDescription() + (task instanceof Subtask ? "," + ((Subtask) task).getEpic().getId() : "");
+        return result;
     }
 
     public static Task taskFromString(String[] value, TaskManager taskManager) {
@@ -124,7 +121,6 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
             Epic epic = new Epic(Integer.parseInt(value[0]), value[2], Status.valueOf(value[3]), value[4]);
             return epic;
         }
-        System.out.println("File is empty, nothing to return");
         return null;
     }
 
@@ -191,8 +187,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
         return fb;
     }
 
-
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) {
         File file = new File("history.csv");
         FileBackedTasksManager fb1 = new FileBackedTasksManager(file);
         Task task = new Task("Task 1", "description Task 1");
@@ -208,7 +203,6 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
         System.out.println("Check 2: " + fb1.historyToString(fb1.getHistoryManager()));
         System.out.println("Check 3: " + fb1.getHistoryManager().getTaskHashMap().toString());
         FileBackedTasksManager fb2 = loadFromFile(file);
-        ;
         System.out.println(fb2.getAllTasks());
         System.out.println(fb2.getHistoryManager().getTaskHashMap());
         System.out.println("Check 4: ");
