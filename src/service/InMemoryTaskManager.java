@@ -95,6 +95,9 @@ public class InMemoryTaskManager implements TaskManager {
         subtask.getEpic().addSubtask(subtask);
         checkEpicStatus(subtask.getEpic());
         counter++;
+        subtask.getEpic().setDuration(subtask.getEpic().getCalcDuration());
+        subtask.getEpic().setStartTime(subtask.getEpic().getCalcStartTime());
+        subtask.getEpic().setEndTime(subtask.getEpic().getCalcEndTime());
         return subtask;
     }
 

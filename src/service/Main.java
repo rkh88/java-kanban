@@ -9,7 +9,7 @@ public class Main {
 
     public static void main(String[] args) throws ManagerSaveException {
 
-        TaskManager taskManager = Managers.getDefault();
+       /* TaskManager taskManager = Managers.getDefault();
         Task task1 = new Task("Заняться домашними делами", "описание");
         Task task2 = new Task("Погулять", "описание");
         taskManager.createTask(task1);
@@ -54,7 +54,7 @@ public class Main {
         printTaskHashMap(taskManager.getHistoryManager());
         taskManager.getSubtaskById(5);
         printTaskHistory(taskManager.getHistoryManager());
-        printTaskHashMap(taskManager.getHistoryManager());
+        printTaskHashMap(taskManager.getHistoryManager());*/
     }
 
     public static void printTaskHistory(HistoryManager hm) {

@@ -1,38 +1,53 @@
 package tasks;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 public class Subtask extends Task {
+    @Override
+    public String typeToString() {
+        return "Subtask";
+    }
+
     protected Epic epic;
 
-    public Subtask(String name, String description, Epic epic) {
-        super(name, description);
-        this.epic = epic;
-        this.status = Status.NEW;
-    }
-
-    public Subtask(int id, String name, Status status, String description) {
-        super(id, name, status, description);
-    }
-
-    public Subtask(int id, String name, Status status, String description, Epic epic) {
-        super(id, name, status, description);
-        this.epic = epic;
-    }
-
-    public Epic getEpic() {
-        return epic;
-    }
 
     @Override
     public String toString() {
-        return "tasks.Subtask{" +
-                "epic=" + epic +
+        return "Subtask{" +
                 ", name='" + name + '\'' +
                 ", description='" + description + '\'' +
                 ", id=" + id +
-                ", status=" + status +
+                ", status=" + status + "epic=" + epic +
+                ", duration=" + duration.toMinutes() +
+                ", startTime=" + startTime +
+                ", endTime=" + endTime +
+                ", durationFormatter=" + durationFormatter +
                 '}';
+    }
+
+    public Subtask(String name, String description, Duration duration, Epic epic) {
+        super(name, description, duration);
+        this.epic = epic;
+        this.status = Status.NEW;
+        this.epic = epic;
+
+    }
+
+/*    public Subtask(int id, String name, Status status, String description) {
+        super(id, name, status, description);
+    }*/
+
+    public Subtask(int id, String name, Status status, String description, Epic epic, Duration duration, LocalDateTime startTime, LocalDateTime endTime) {
+        super(id, name, status, description, duration, startTime, endTime);
+        this.epic = epic;
+    }
+
+
+
+    public Epic getEpic() {
+        return epic;
     }
 
     @Override
@@ -43,6 +58,7 @@ public class Subtask extends Task {
         Subtask subtask = (Subtask) o;
         return Objects.equals(epic, subtask.epic);
     }
+
 
     @Override
     public int hashCode() {
