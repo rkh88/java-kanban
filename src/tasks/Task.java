@@ -89,20 +89,6 @@ public class Task {
         return "TASK";
     }
 
-    DateTimeFormatter durationFormatter = DateTimeFormatter.ofPattern("MM");
-
-    @Override
-    public String toString() {
-        return "Task{" +
-                "name='" + name + '\'' +
-                ", description='" + description + '\'' +
-                ", id=" + id +
-                ", status=" + status +
-                ", duration=" + duration.toMinutes() +
-                ", endTime=" + endTime.toString() +
-                '}';
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -114,5 +100,18 @@ public class Task {
     @Override
     public int hashCode() {
         return Objects.hash(name, description, id, status, duration, startTime, endTime);
+    }
+
+    @Override
+    public String toString() {
+        return "Task{" +
+                "name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                ", id=" + id +
+                ", status=" + status +
+                ", duration=" + duration +
+                ", startTime=" + startTime +
+                ", endTime=" + endTime +
+                '}';
     }
 }

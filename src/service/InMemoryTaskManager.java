@@ -92,12 +92,13 @@ public class InMemoryTaskManager implements TaskManager {
     public Subtask createSubtask(Subtask subtask) {
         subtask.setId(counter);
         getAllSubtasks().put(counter, subtask);
-        subtask.getEpic().addSubtask(subtask);
+        Epic epic = subtask.getEpic();
+        epic.addSubtask(subtask);
         checkEpicStatus(subtask.getEpic());
         counter++;
-        subtask.getEpic().setDuration(subtask.getEpic().getCalcDuration());
-        subtask.getEpic().setStartTime(subtask.getEpic().getCalcStartTime());
-        subtask.getEpic().setEndTime(subtask.getEpic().getCalcEndTime());
+        epic.setDuration(epic.getCalcDuration());
+        epic.setStartTime(epic.getCalcStartTime());
+        epic.setEndTime(epic.getCalcEndTime());
         return subtask;
     }
 
@@ -217,5 +218,9 @@ public class InMemoryTaskManager implements TaskManager {
     @Override
     public ArrayList<Subtask> getSubtasksListByEpic(Epic epic) {
         return epic.getSubtasks();
+    }
+
+    public void setCounter(int counter) {
+        this.counter = counter;
     }
 }

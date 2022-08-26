@@ -5,27 +5,8 @@ import java.time.LocalDateTime;
 import java.util.Objects;
 
 public class Subtask extends Task {
-    @Override
-    public String typeToString() {
-        return "Subtask";
-    }
 
     protected Epic epic;
-
-
-    @Override
-    public String toString() {
-        return "Subtask{" +
-                ", name='" + name + '\'' +
-                ", description='" + description + '\'' +
-                ", id=" + id +
-                ", status=" + status + "epic=" + epic +
-                ", duration=" + duration.toMinutes() +
-                ", startTime=" + startTime +
-                ", endTime=" + endTime +
-                ", durationFormatter=" + durationFormatter +
-                '}';
-    }
 
     public Subtask(String name, String description, Duration duration, Epic epic) {
         super(name, description, duration);
@@ -64,4 +45,10 @@ public class Subtask extends Task {
     public int hashCode() {
         return Objects.hash(super.hashCode(), epic);
     }
+
+    @Override
+    public String typeToString() {
+        return "SUBTASK";
+    }
+
 }

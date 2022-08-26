@@ -6,24 +6,17 @@ import java.util.ArrayList;
 import java.util.Objects;
 
 public class Epic extends Task {
-    protected ArrayList<Subtask> subtasks;
-    protected Duration duration;
-    protected LocalDateTime startTime;
-    protected LocalDateTime endTime;
-
-   /* public Epic(String name, String description, Duration duration) {
-        super(name, description, duration);
-        this.subtasks = new ArrayList<>();
-    }*/
-
-
+    protected ArrayList<Subtask> subtasks = new ArrayList<>();;
 
     public Epic(String name, String description,Duration duration) {
         super(name, description, duration);
+        this.status = Status.NEW;
+
     }
 
     public Epic(int id, String name, Status status, String description, Duration duration, LocalDateTime startTime, LocalDateTime endTime) {
         super(id, name, status, description, duration, startTime, endTime);
+
     }
 
     @Override
@@ -54,7 +47,7 @@ public class Epic extends Task {
     }
 
     public void addSubtask(Subtask subtask) {
-        this.subtasks.add(subtask);
+        this.getSubtasks().add(subtask);
     }
 
 
@@ -76,17 +69,4 @@ public class Epic extends Task {
         return Objects.equals(subtasks, epic.subtasks) && Objects.equals(duration, epic.duration) && Objects.equals(startTime, epic.startTime) && Objects.equals(endTime, epic.endTime);
     }
 
-   /* @Override
-    public String toString() {
-        return "Epic{" +
-                "subtasks=" + subtasks +
-                ", duration=" + duration.toMinutes() +
-                ", startTime=" + startTime +
-                ", endTime=" + endTime +
-                ", name='" + name + '\'' +
-                ", description='" + description + '\'' +
-                ", id=" + id +
-                ", status=" + status +
-                '}';
-    }*/
 }

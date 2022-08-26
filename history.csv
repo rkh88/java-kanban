@@ -1,5 +1,6 @@
 id,type,name,status,description,epic,duration,startTime,endTime
-1,TASK,Task 1,NEW,description Task 1,no epic,30,2022-08-25T17:50:38.957957,2022-08-25T18:20:38.957957
-2,EPIC,Epic 1,NEW,description Epic 1,no epic,0,2022-08-25T17:50:38.958560,2022-08-25T17:50:38.958560
+1,TASK,Task 1,NEW,description Task 1,no epic,PT30M,2022-08-26T21:03:05.475882,2022-08-26T21:33:05.475882
+2,EPIC,Epic 1,NEW,description Epic 1,no epic,PT0S,2022-08-26T21:03:05.479055,2022-08-26T21:03:05.479055
+3,SUBTASK,Subtask 1,NEW,description Subtask 1,2,PT15M,2022-08-26T21:03:05.479055,2022-08-26T21:18:05.479055
 
 1,2
