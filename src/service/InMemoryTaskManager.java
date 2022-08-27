@@ -14,10 +14,10 @@ public class InMemoryTaskManager implements TaskManager {
     private final HashMap<Integer, Subtask> allSubtasks = new HashMap<>();
     private final HashMap<Integer, Epic> allEpics = new HashMap<>();
     private int counter = 1;
-    private final HistoryManager historyManager = Managers.getDefaultHistory();
+    private final HistoryManager<HistoryManager> historyManager = Managers.getDefaultHistory();
 
     @Override
-    public HistoryManager getHistoryManager() {
+    public HistoryManager<HistoryManager> getHistoryManager() {
         return historyManager;
     }
 
@@ -220,6 +220,7 @@ public class InMemoryTaskManager implements TaskManager {
         return epic.getSubtasks();
     }
 
+    @Override
     public void setCounter(int counter) {
         this.counter = counter;
     }

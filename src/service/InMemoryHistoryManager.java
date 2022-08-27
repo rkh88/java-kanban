@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Objects;
 
-public class InMemoryHistoryManager implements HistoryManager {
+public class InMemoryHistoryManager implements HistoryManager<HistoryManager> {
 
     private final CustomLinkedList taskCustomLinkedList;
     private final HashMap<Integer, Node> taskHashMap;

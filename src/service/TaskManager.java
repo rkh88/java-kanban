@@ -16,7 +16,7 @@ public interface TaskManager {
 
     HashMap<Integer, Epic> getAllEpics();
 
-    HistoryManager getHistoryManager();
+    HistoryManager<HistoryManager> getHistoryManager();
 
     void deleteAllTasks();
 
@@ -53,4 +53,6 @@ public interface TaskManager {
     void deleteEpicById(int id) throws ManagerSaveException;
 
     ArrayList<Subtask> getSubtasksListByEpic(Epic epic);
+
+    void setCounter(int counter);
 }

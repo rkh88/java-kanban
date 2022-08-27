@@ -5,7 +5,7 @@ import tasks.Task;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public interface HistoryManager {
+public interface HistoryManager<I extends HistoryManager> {
 
     void add(Task task);
 

@@ -1,16 +1,20 @@
-/*
 package service;
 
 import org.junit.jupiter.api.Test;
+import service.HistoryManager;
+import service.InMemoryHistoryManager;
+import tasks.Task;
+
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class HistoryManagerTest {
+public abstract class InMemoryHistoryManagerTest {
 
-    private HistoryManagerTest historyManager;
+    private HistoryManager<HistoryManager> historyManager;
 
     @Test
-    void add() {
+    void add(Task task) {
         historyManager.add(task);
         final List<Task> history = historyManager.getHistory();
         assertNotNull(history, "История не пустая.");
@@ -28,5 +32,6 @@ class HistoryManagerTest {
     @Test
     void getTaskHashMap() {
     }
+
+
 }
-*/

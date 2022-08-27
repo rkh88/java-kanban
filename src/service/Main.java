@@ -1,8 +1,5 @@
 package service;
 
-import tasks.Epic;
-import tasks.Status;
-import tasks.Subtask;
 import tasks.Task;
 
 public class Main {
@@ -57,13 +54,13 @@ public class Main {
         printTaskHashMap(taskManager.getHistoryManager());*/
     }
 
-    public static void printTaskHistory(HistoryManager hm) {
+    public static void printTaskHistory(HistoryManager<HistoryManager> hm) {
         for (Task task : hm.getHistory()) {
             System.out.println("Task history: id " + task.getId() + " " + task.toString());
         }
     }
 
-    public static void printTaskHashMap(HistoryManager hm) {
+    public static void printTaskHashMap(HistoryManager<HistoryManager> hm) {
         for (Integer id : hm.getTaskHashMap().keySet()) {
             System.out.println("Id " + id + ":" + hm.getTaskHashMap().get(id).toString());
         }
