@@ -14,4 +14,6 @@ public interface HistoryManager<I extends HistoryManager> {
     ArrayList<Task> getHistory();
 
     HashMap<Integer, InMemoryHistoryManager.Node> getTaskHashMap();
+
+    InMemoryHistoryManager.CustomLinkedList getTaskCustomLinkedList();
 }

@@ -8,7 +8,9 @@ import tasks.Task;
 import java.io.*;
 import java.time.Duration;
 import java.time.LocalDateTime;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 public class FileBackedTasksManager extends InMemoryTaskManager {
 
@@ -205,10 +207,10 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
     }
 
         public static void main(String[] args) {
-        File file = new File("history.csv");
+       /* File file = new File("history.csv");
         FileBackedTasksManager fb1 = new FileBackedTasksManager(file);
-        fb1.deleteTaskById(1);
-        /* Task task = new Task("Task 1", "description Task 1", Duration.ofMinutes(30));
+        *//*fb1.deleteTaskById(1);*//*
+        Task task = new Task("Task 1", "description Task 1", Duration.ofMinutes(30));
         Epic epic = new Epic("Epic 1", "description Epic 1", Duration.ofMinutes(0));
         Subtask subtask = new Subtask("Subtask 1", "description Subtask 1", Duration.ofMinutes(15), epic);
         fb1.createTask(task);
@@ -221,11 +223,11 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
         printAllTasks(fb1);
         System.out.println("Check 2: " + fb1.historyToString(fb1.getHistoryManager()));
         System.out.println("Check 3: " + fb1.getHistoryManager().getTaskHashMap().toString());
-       *//* fb1.setCounter(1);*//*
+        *//* fb1.setCounter(1);*//*
         FileBackedTasksManager fb2 = loadFromFile(file);
         System.out.println(fb2.getHistoryManager().getTaskHashMap());
         System.out.println("Check 4: ");
-        printAllTasks(fb2);
+        printAllTasks(fb2);*/
     }
 
     public static void printAllTasks(FileBackedTasksManager fb) {
@@ -237,7 +239,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
         }
         for (Integer key : fb.getAllSubtasks().keySet()) {
             System.out.println(fb.getAllSubtasks().get(key).toString());
-        }*/
+        }
 
     }
 }

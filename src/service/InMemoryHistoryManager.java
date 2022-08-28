@@ -21,6 +21,11 @@ public class InMemoryHistoryManager implements HistoryManager<HistoryManager> {
         return taskHashMap;
     }
 
+    @Override
+    public CustomLinkedList getTaskCustomLinkedList() {
+        return taskCustomLinkedList;
+    }
+
     public class CustomLinkedList {
         private Node head;
         private Node tail;
@@ -54,6 +59,10 @@ public class InMemoryHistoryManager implements HistoryManager<HistoryManager> {
                 oldPrevious.setNextNode(null);
                 tail = oldPrevious;
             }
+        }
+
+        public void removeAll() {
+            head = null;
         }
 
         public Node getHead() {
