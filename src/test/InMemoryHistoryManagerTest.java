@@ -1,5 +1,6 @@
 package test;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -67,6 +68,27 @@ public class InMemoryHistoryManagerTest {
         hm.remove(3);
         final List<Task> history = hm.getHistory();
         assertEquals(2, history.size(), "История не пустая.");
+    }
+
+    @Test
+    public void doubleTask() {
+        tm.setCounter(1);
+        Task doubleTask = new Task("TestTask 1", "TestTask 1 description", Duration.ofMinutes(15));
+        hm.add(doubleTask);
+        final List<Task> history = hm.getHistory();
+        assertEquals(4, history.size());
+        assertEquals(4, hm.getTaskHashMap().size());
+
+    }
+
+    @Test
+    public void emptyHistory() {
+        tm.getAllTasks().clear();
+        hm.getTaskHashMap().clear();
+        hm.getTaskCustomLinkedList().removeAll();
+        assertEquals(0, tm.getAllTasks().size());
+        assertEquals(0, hm.getTaskHashMap().size());
+        Assertions.assertNull(hm.getTaskCustomLinkedList().getHead());
     }
 
     @Test
