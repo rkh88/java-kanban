@@ -12,6 +12,8 @@ import tasks.Task;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.HashMap;
+import java.util.List;
+import java.util.ArrayList;
 
 public class InMemoryTaskManagerTest extends TaskManagerTest<InMemoryTaskManager> {
 
@@ -19,6 +21,13 @@ public class InMemoryTaskManagerTest extends TaskManagerTest<InMemoryTaskManager
     public void setUp() {
         tm = new InMemoryTaskManager();
         initTasks();
+    }
+
+    @Test
+    public void prioritizedTasksCheck() {
+        List<Task> taskList = new ArrayList<>(tm.getPrioritizedTasks());
+        Assertions.assertEquals(tm.getAllTasks().get(1), taskList.get(0));
+        Assertions.assertEquals(tm.getAllSubtasks().get(3), taskList.get(1));
     }
 
     @Test

@@ -7,6 +7,7 @@ import tasks.Task;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.TreeSet;
 
 public class InMemoryTaskManager implements TaskManager {
 
@@ -15,6 +16,12 @@ public class InMemoryTaskManager implements TaskManager {
     private final HashMap<Integer, Epic> allEpics = new HashMap<>();
     private int counter = 1;
     private final HistoryManager<HistoryManager> historyManager = Managers.getDefaultHistory();
+    private final TreeSet<Task> prioritizedTasks = new TreeSet<>();
+
+    @Override
+    public TreeSet<Task> getPrioritizedTasks() {
+        return prioritizedTasks;
+    }
 
     @Override
     public HistoryManager<HistoryManager> getHistoryManager() {
@@ -76,6 +83,7 @@ public class InMemoryTaskManager implements TaskManager {
     public Task createTask(Task task) {
         task.setId(counter);
         getAllTasks().put(counter, task);
+        prioritizedTasks.add(task);
         counter++;
         return task;
     }
@@ -95,6 +103,7 @@ public class InMemoryTaskManager implements TaskManager {
         Epic epic = subtask.getEpic();
         epic.addSubtask(subtask);
         checkEpicStatus(subtask.getEpic());
+        prioritizedTasks.add(subtask);
         counter++;
         epic.setDuration(epic.getCalcDuration());
         epic.setStartTime(epic.getCalcStartTime());
