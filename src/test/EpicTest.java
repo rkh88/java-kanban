@@ -10,7 +10,7 @@ import tasks.Status;
 import tasks.Subtask;
 
 import java.time.Duration;
-
+import java.time.LocalDateTime;
 
 
 class EpicTest {
@@ -23,7 +23,7 @@ class EpicTest {
         tm.getAllEpics().clear();
         tm.getAllSubtasks().clear();
         tm.setCounter(1);
-        Epic epic1 = new Epic("Epic 1", "description Epic 1", Duration.ofMinutes(0));
+        Epic epic1 = new Epic("Epic 1", "description Epic 1");
         tm.createEpic(epic1);
         Subtask subtask1 = new Subtask("Test Subtask 1", "Test description", Duration.ofMinutes(30), epic1);
         tm.createSubtask(subtask1);
@@ -31,6 +31,27 @@ class EpicTest {
         tm.createSubtask(subtask2);
         Subtask subtask3 = new Subtask("Test Subtask 3", "Test description", Duration.ofMinutes(30), epic1);
         tm.createSubtask(subtask3);
+    }
+
+    @Test
+    public void epicDurationCheck() {
+        Duration sumDuration = Duration.ofMinutes(0);
+        for(Subtask subtask : tm.getAllEpics().get(1).getSubtasks()) {
+            sumDuration = sumDuration.plus(subtask.getDuration());
+        }
+        Assertions.assertEquals(sumDuration, tm.getAllEpics().get(1).getDuration());
+    }
+
+    @Test
+    public void epicStartTimeCheck() {
+        Epic epic = tm.getAllEpics().get(1);
+        Assertions.assertEquals(epic.getSubtasks().get(0).getStartTime(), epic.getStartTime());
+    }
+
+    @Test
+    public void epicEndTimeCheck() {
+        Epic epic = tm.getAllEpics().get(1);
+        Assertions.assertEquals(epic.getStartTime().plus(epic.getDuration()), epic.getEndTime());
     }
 
     @Test

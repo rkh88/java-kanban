@@ -23,7 +23,7 @@ public abstract class TaskManagerTest<T extends TaskManager> {
         tm.setCounter(1);
         task = new Task("TestTask", "TestTask description", Duration.ofMinutes(15));
         tm.createTask(task);
-        epic = new Epic("TestEpic", "TestEpic description", Duration.ofMinutes(0));
+        epic = new Epic("TestEpic", "TestEpic description");
         tm.createEpic(epic);
         subtask = new Subtask("Test Subtask", "Test description", Duration.ofMinutes(30), epic);
         tm.createSubtask(subtask);

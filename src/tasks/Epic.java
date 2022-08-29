@@ -8,8 +8,8 @@ import java.util.Objects;
 public class Epic extends Task {
     protected ArrayList<Subtask> subtasks;
 
-    public Epic(String name, String description,Duration duration) {
-        super(name, description, duration);
+    public Epic(String name, String description) {
+        super(name, description);
         this.subtasks = new ArrayList<>();
     }
 
@@ -27,7 +27,7 @@ public class Epic extends Task {
     public Duration getCalcDuration() {
         Duration calcDuration = Duration.ofMinutes(0);
         for(Subtask subtask : this.getSubtasks()) {
-            calcDuration.plus(subtask.getDuration());
+            calcDuration = calcDuration.plus(subtask.getDuration());
         }
         return calcDuration;
     }

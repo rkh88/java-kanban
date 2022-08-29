@@ -20,7 +20,7 @@ class FileBackedTasksManagerTest {
     @BeforeAll
     static void setUp() {
         Task task = new Task("Task 1", "description Task 1", Duration.ofMinutes(30));
-        Epic epic = new Epic("Epic 1", "description Epic 1", Duration.ofMinutes(0));
+        Epic epic = new Epic("Epic 1", "description Epic 1");
         Subtask subtask = new Subtask("Subtask 1", "description Subtask 1", Duration.ofMinutes(15), epic);
         fb1.createTask(task);
         fb1.createEpic(epic);
