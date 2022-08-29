@@ -15,6 +15,7 @@ public class Epic extends Task {
 
     public Epic(int id, String name, Status status, String description, Duration duration, LocalDateTime startTime, LocalDateTime endTime) {
         super(id, name, status, description, duration, startTime, endTime);
+        this.subtasks = new ArrayList<>();
 
     }
 
