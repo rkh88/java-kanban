@@ -1,12 +1,13 @@
-package tasks;
+package test;
 
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import service.HistoryManager;
 import service.Managers;
 import service.TaskManager;
+import tasks.Epic;
+import tasks.Status;
+import tasks.Subtask;
 
 import java.time.Duration;
 
