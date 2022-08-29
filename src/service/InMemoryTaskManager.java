@@ -7,6 +7,7 @@ import tasks.Task;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.TreeSet;
 
 public class InMemoryTaskManager implements TaskManager {
@@ -81,10 +82,21 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public Task createTask(Task task) {
-        task.setId(counter);
-        getAllTasks().put(counter, task);
-        prioritizedTasks.add(task);
-        counter++;
+        boolean hasCrossing = false;
+        for(Map.Entry entry : getAllTasks().entrySet()) {
+            Task value = (Task) entry.getValue();
+            if(value.getStartTime().isEqual(task.getStartTime())) {
+                hasCrossing = true;
+                System.out.println("Task with such start time exists");
+            }
+        }
+        if(hasCrossing == false) {
+            task.setId(counter);
+            getAllTasks().put(counter, task);
+            prioritizedTasks.add(task);
+            counter++;
+        }
+
         return task;
     }
 
@@ -98,16 +110,26 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public Subtask createSubtask(Subtask subtask) {
-        subtask.setId(counter);
-        getAllSubtasks().put(counter, subtask);
-        Epic epic = subtask.getEpic();
-        epic.addSubtask(subtask);
-        checkEpicStatus(subtask.getEpic());
-        prioritizedTasks.add(subtask);
-        counter++;
-        epic.setDuration(epic.getCalcDuration());
-        epic.setStartTime(epic.getCalcStartTime());
-        epic.setEndTime(epic.getCalcEndTime());
+        boolean hasCrossing = false;
+        for(Map.Entry entry : getAllSubtasks().entrySet()) {
+            Subtask value = (Subtask) entry.getValue();
+            if(value.getStartTime().isEqual(subtask.getStartTime())) {
+                hasCrossing = true;
+                System.out.println("Subtask with such start time exists");
+            }
+        }
+        if(hasCrossing == false) {
+            subtask.setId(counter);
+            getAllSubtasks().put(counter, subtask);
+            Epic epic = subtask.getEpic();
+            epic.addSubtask(subtask);
+            checkEpicStatus(subtask.getEpic());
+            prioritizedTasks.add(subtask);
+            counter++;
+            epic.setDuration(epic.getCalcDuration());
+            epic.setStartTime(epic.getCalcStartTime());
+            epic.setEndTime(epic.getCalcEndTime());
+        }
         return subtask;
     }
 

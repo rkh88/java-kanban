@@ -31,6 +31,22 @@ public class InMemoryTaskManagerTest extends TaskManagerTest<InMemoryTaskManager
     }
 
     @Test
+    public void taskCrossingCheck() {
+        Task crossingTask = new Task("CrossingTask", "CrossingTask description", Duration.ofMinutes(15));
+        crossingTask.setStartTime(tm.getAllTasks().get(1).getStartTime());
+        tm.createTask(crossingTask);
+        Assertions.assertEquals(1, tm.getAllTasks().size());
+    }
+
+    @Test
+    public void subtaskCrossingCheck() {
+        Subtask crossingSubtask = new Subtask("CrossingSubtask", "CrossingSubtask description", Duration.ofMinutes(15), tm.getAllSubtasks().get(3).getEpic());
+        crossingSubtask.setStartTime(tm.getAllSubtasks().get(3).getStartTime());
+        tm.createSubtask(subtask);
+        Assertions.assertEquals(1, tm.getAllSubtasks().size());
+    }
+
+    @Test
     void createTask() {
         tm.getAllTasks().clear();
         tm.getAllEpics().clear();
