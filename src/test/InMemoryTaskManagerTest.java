@@ -4,6 +4,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import service.InMemoryTaskManager;
+import service.TaskValidationException;
 import tasks.Epic;
 import tasks.Status;
 import tasks.Subtask;
@@ -25,27 +26,32 @@ public class InMemoryTaskManagerTest extends TaskManagerTest<InMemoryTaskManager
 
     @Test
     public void prioritizedTasksCheck() {
+        Task taskWithoutTime = new Task("TestTaskWithoutTime", "TestTaskWithoutTime description");
+        tm.createTask(taskWithoutTime);
+        taskWithoutTime.setStartTime(null);
+        Task taskNew = new Task("TestTaskNew", "TestTaskNew description", Duration.ofMinutes(15));
+        tm.createTask(taskNew);
         List<Task> taskList = new ArrayList<>(tm.getPrioritizedTasks());
         Assertions.assertEquals(tm.getAllTasks().get(1), taskList.get(0));
         Assertions.assertEquals(tm.getAllEpics().get(2), taskList.get(1));
         Assertions.assertEquals(tm.getAllSubtasks().get(3), taskList.get(2));
-        Assertions.assertEquals(3, taskList.size());
+        Assertions.assertEquals(tm.getAllTasks().get(5), taskList.get(3));
+        Assertions.assertEquals(tm.getAllTasks().get(4), taskList.get(4));// проверка на то, что таск без времени лежит в конце списка
+        Assertions.assertEquals(5, taskList.size());
     }
 
     @Test
-    public void taskCrossingCheck() {
+    public void taskCrossingTimeCheck() {
         Task crossingTask = new Task("CrossingTask", "CrossingTask description", Duration.ofMinutes(15));
         crossingTask.setStartTime(tm.getAllTasks().get(1).getStartTime());
-        tm.createTask(crossingTask);
-        Assertions.assertEquals(1, tm.getAllTasks().size());
+        Assertions.assertThrows(TaskValidationException.class, () -> tm.createTask(crossingTask));
     }
 
     @Test
-    public void subtaskCrossingCheck() {
+    public void subtaskCrossingTimeCheck() {
         Subtask crossingSubtask = new Subtask("CrossingSubtask", "CrossingSubtask description", Duration.ofMinutes(15), tm.getAllSubtasks().get(3).getEpic());
         crossingSubtask.setStartTime(tm.getAllSubtasks().get(3).getStartTime());
-        tm.createSubtask(subtask);
-        Assertions.assertEquals(1, tm.getAllSubtasks().size());
+        Assertions.assertThrows(TaskValidationException.class, () -> tm.createSubtask(crossingSubtask));
     }
 
     @Test

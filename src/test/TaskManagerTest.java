@@ -27,7 +27,6 @@ public abstract class TaskManagerTest<T extends TaskManager> {
         tm.createEpic(epic);
         subtask = new Subtask("Test Subtask", "Test description", Duration.ofMinutes(30), epic);
         tm.createSubtask(subtask);
-
     }
 
     @Test

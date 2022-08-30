@@ -82,68 +82,57 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public Task createTask(Task task) {
-        boolean hasCrossing = false;
         for(Map.Entry entry : getAllTasks().entrySet()) {
             Task value = (Task) entry.getValue();
-            if(value.getStartTime().isEqual(task.getStartTime())) {
-                hasCrossing = true;
-                System.out.println("Task with such start time exists");
+            if(task.getStartTime() != null && value.getStartTime() != null && value.getStartTime().isEqual(task.getStartTime())) {
+                throw new TaskValidationException("Task with such start time exists");
             }
         }
-        if(hasCrossing == false) {
-            task.setId(counter);
-            getAllTasks().put(counter, task);
-            prioritizedTasks.add(task);
-            counter++;
-        }
 
+        task.setId(counter);
+        getAllTasks().put(counter, task);
+        prioritizedTasks.add(task);
+        counter++;
         return task;
     }
 
     @Override
     public Epic createEpic(Epic epic) {
-        boolean hasCrossing = false;
         if(epic.getDuration() != null) {
             for(Map.Entry entry : getAllEpics().entrySet()) {
                 Epic value = (Epic) entry.getValue();
-                if(value.getStartTime().isEqual(epic.getStartTime())) {
-                    hasCrossing = true;
-                    System.out.println("Subtask with such start time exists");
+                if(epic.getStartTime() != null && value.getStartTime() != null && value.getStartTime().isEqual(epic.getStartTime())) {
+                    throw new TaskValidationException("Epic with such start time exists");
                 }
             }
         }
-        if(hasCrossing == false) {
-            epic.setId(counter);
-            getAllEpics().put(counter, epic);
-            prioritizedTasks.add(epic);
-            counter++;
-        }
 
+        epic.setId(counter);
+        getAllEpics().put(counter, epic);
+        prioritizedTasks.add(epic);
+        counter++;
         return epic;
     }
 
     @Override
-    public Subtask createSubtask(Subtask subtask) {
-        boolean hasCrossing = false;
+    public Subtask createSubtask(Subtask subtask) throws TaskValidationException {
         for(Map.Entry entry : getAllSubtasks().entrySet()) {
             Subtask value = (Subtask) entry.getValue();
-            if(value.getStartTime().isEqual(subtask.getStartTime())) {
-                hasCrossing = true;
-                System.out.println("Subtask with such start time exists");
+            if(subtask.getStartTime() != null && value.getStartTime() != null && value.getStartTime().isEqual(subtask.getStartTime())) {
+                throw new TaskValidationException("Subtask with such start time exists");
             }
         }
-        if(hasCrossing == false) {
-            subtask.setId(counter);
-            getAllSubtasks().put(counter, subtask);
-            Epic epic = subtask.getEpic();
-            epic.addSubtask(subtask);
-            checkEpicStatus(subtask.getEpic());
-            prioritizedTasks.add(subtask);
-            counter++;
-            epic.setDuration(epic.getCalcDuration());
-            epic.setStartTime(epic.getCalcStartTime());
-            epic.setEndTime(epic.getCalcEndTime());
-        }
+
+        subtask.setId(counter);
+        getAllSubtasks().put(counter, subtask);
+        Epic epic = subtask.getEpic();
+        epic.addSubtask(subtask);
+        checkEpicStatus(subtask.getEpic());
+        prioritizedTasks.add(subtask);
+        counter++;
+        epic.setDuration(epic.getCalcDuration());
+        epic.setStartTime(epic.getCalcStartTime());
+        epic.setEndTime(epic.getCalcEndTime());
         return subtask;
     }
 
