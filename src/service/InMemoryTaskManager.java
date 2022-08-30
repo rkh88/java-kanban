@@ -102,9 +102,23 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public Epic createEpic(Epic epic) {
-        epic.setId(counter);
-        getAllEpics().put(counter, epic);
-        counter++;
+        boolean hasCrossing = false;
+        if(epic.getDuration() != null) {
+            for(Map.Entry entry : getAllEpics().entrySet()) {
+                Epic value = (Epic) entry.getValue();
+                if(value.getStartTime().isEqual(epic.getStartTime())) {
+                    hasCrossing = true;
+                    System.out.println("Subtask with such start time exists");
+                }
+            }
+        }
+        if(hasCrossing == false) {
+            epic.setId(counter);
+            getAllEpics().put(counter, epic);
+            prioritizedTasks.add(epic);
+            counter++;
+        }
+
         return epic;
     }
 
@@ -193,6 +207,7 @@ public class InMemoryTaskManager implements TaskManager {
             historyManager.remove(id);
         }
         if (getAllTasks().containsKey(id)) {
+            getPrioritizedTasks().remove(getAllTasks().get(id));
             getAllTasks().remove(id);
         } else {
             System.out.println("No such task");
@@ -205,6 +220,7 @@ public class InMemoryTaskManager implements TaskManager {
             historyManager.remove(id);
         }
         if (getAllSubtasks().containsKey(id)) {
+            getPrioritizedTasks().remove(getAllSubtasks().get(id));
             getAllSubtasks().remove(id);
             checkEpicStatus(getAllSubtasks().get(id).getEpic());
         } else {
@@ -216,6 +232,7 @@ public class InMemoryTaskManager implements TaskManager {
     public void deleteEpicById(int id) throws ManagerSaveException { //тут надо по DRY все сделать, пока думаю как
         if (historyManager.getHistory().size() != 0 && historyManager.getHistory().contains(getAllEpics().get(id))) {
             historyManager.remove(id);
+            getPrioritizedTasks().remove(getAllEpics().get(id));
             getAllEpics().remove(id);
 
             ArrayList<Integer> keysToDelete = new ArrayList<>();
@@ -226,6 +243,7 @@ public class InMemoryTaskManager implements TaskManager {
             }
             for (Integer key : keysToDelete) {
                 historyManager.remove(key);
+                getPrioritizedTasks().remove(getAllSubtasks().get(key));
                 getAllSubtasks().remove(key);
             }
         }
@@ -238,8 +256,10 @@ public class InMemoryTaskManager implements TaskManager {
                 }
             }
             for (Integer key : keysToDelete) {
+                getPrioritizedTasks().remove(getAllSubtasks().get(key));
                 getAllSubtasks().remove(key);
             }
+            getPrioritizedTasks().remove(getAllEpics().get(id));
             getAllEpics().remove(id);
         } else {
             System.out.println("No such epic");

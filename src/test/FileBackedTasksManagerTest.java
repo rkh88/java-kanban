@@ -13,7 +13,7 @@ import java.time.Duration;
 
 class FileBackedTasksManagerTest {
 
-    private static final File file = new File("/Users/ruslan/dev/java-kanban/history.csv");
+    private static final File file = new File("history.csv");
     private static final FileBackedTasksManager fb1 = new FileBackedTasksManager(file);
     private static FileBackedTasksManager fb2;
 

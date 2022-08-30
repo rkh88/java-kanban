@@ -27,7 +27,9 @@ public class InMemoryTaskManagerTest extends TaskManagerTest<InMemoryTaskManager
     public void prioritizedTasksCheck() {
         List<Task> taskList = new ArrayList<>(tm.getPrioritizedTasks());
         Assertions.assertEquals(tm.getAllTasks().get(1), taskList.get(0));
-        Assertions.assertEquals(tm.getAllSubtasks().get(3), taskList.get(1));
+        Assertions.assertEquals(tm.getAllEpics().get(2), taskList.get(1));
+        Assertions.assertEquals(tm.getAllSubtasks().get(3), taskList.get(2));
+        Assertions.assertEquals(3, taskList.size());
     }
 
     @Test
@@ -107,6 +109,7 @@ public class InMemoryTaskManagerTest extends TaskManagerTest<InMemoryTaskManager
     void deleteTaskById() {
         tm.deleteTaskById(1);
         Assertions.assertEquals(0, tm.getAllTasks().size());
+
     }
 
     @Test
