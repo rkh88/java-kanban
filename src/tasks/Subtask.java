@@ -8,8 +8,8 @@ public class Subtask extends Task {
 
     protected Epic epic;
 
-    public Subtask(String name, String description, Duration duration, Epic epic) {
-        super(name, description, duration);
+    public Subtask(String name, String description, LocalDateTime startTime, Duration duration, Epic epic) {
+        super(name, description, startTime, duration);
         this.epic = epic;
 
     }

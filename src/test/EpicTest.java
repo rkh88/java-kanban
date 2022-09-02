@@ -22,14 +22,15 @@ class EpicTest {
     public void beforeEach() {
         tm.getAllEpics().clear();
         tm.getAllSubtasks().clear();
+        tm.getPrioritizedTasks().clear();
         tm.setCounter(1);
         Epic epic1 = new Epic("Epic 1", "description Epic 1");
         tm.createEpic(epic1);
-        Subtask subtask1 = new Subtask("Test Subtask 1", "Test description", Duration.ofMinutes(30), epic1);
+        Subtask subtask1 = new Subtask("Test Subtask 1", "Test description", LocalDateTime.now().plusMinutes(10), Duration.ofMinutes(30), epic1);
         tm.createSubtask(subtask1);
-        Subtask subtask2 = new Subtask("Test Subtask 2", "Test description", Duration.ofMinutes(30), epic1);
+        Subtask subtask2 = new Subtask("Test Subtask 2", "Test description", LocalDateTime.now().plusMinutes(20), Duration.ofMinutes(30), epic1);
         tm.createSubtask(subtask2);
-        Subtask subtask3 = new Subtask("Test Subtask 3", "Test description", Duration.ofMinutes(30), epic1);
+        Subtask subtask3 = new Subtask("Test Subtask 3", "Test description", LocalDateTime.now().plusMinutes(30), Duration.ofMinutes(30), epic1);
         tm.createSubtask(subtask3);
     }
 

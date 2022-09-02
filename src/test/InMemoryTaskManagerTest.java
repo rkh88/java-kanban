@@ -29,12 +29,12 @@ public class InMemoryTaskManagerTest extends TaskManagerTest<InMemoryTaskManager
         Task taskWithoutTime = new Task("TestTaskWithoutTime", "TestTaskWithoutTime description");
         tm.createTask(taskWithoutTime);
         taskWithoutTime.setStartTime(null);
-        Task taskNew = new Task("TestTaskNew", "TestTaskNew description", Duration.ofMinutes(15));
+        Task taskNew = new Task("TestTaskNew", "TestTaskNew description", LocalDateTime.now().plusMinutes(30), Duration.ofMinutes(15));
         tm.createTask(taskNew);
         List<Task> taskList = new ArrayList<>(tm.getPrioritizedTasks());
         Assertions.assertEquals(tm.getAllTasks().get(1), taskList.get(0));
-        Assertions.assertEquals(tm.getAllEpics().get(2), taskList.get(1));
-        Assertions.assertEquals(tm.getAllSubtasks().get(3), taskList.get(2));
+        Assertions.assertEquals(tm.getAllSubtasks().get(3), taskList.get(1));
+        Assertions.assertEquals(tm.getAllEpics().get(2), taskList.get(2));
         Assertions.assertEquals(tm.getAllTasks().get(5), taskList.get(3));
         Assertions.assertEquals(tm.getAllTasks().get(4), taskList.get(4));// проверка на то, что таск без времени лежит в конце списка
         Assertions.assertEquals(5, taskList.size());
@@ -42,15 +42,13 @@ public class InMemoryTaskManagerTest extends TaskManagerTest<InMemoryTaskManager
 
     @Test
     public void taskCrossingTimeCheck() {
-        Task crossingTask = new Task("CrossingTask", "CrossingTask description", Duration.ofMinutes(15));
-        crossingTask.setStartTime(tm.getAllTasks().get(1).getStartTime());
+        Task crossingTask = new Task("CrossingTask", "CrossingTask description", tm.getAllTasks().get(1).getStartTime(), Duration.ofMinutes(15));
         Assertions.assertThrows(TaskValidationException.class, () -> tm.createTask(crossingTask));//Это что? Не проверка на исключение разве?
     }
 
     @Test
     public void subtaskCrossingTimeCheck() {
-        Subtask crossingSubtask = new Subtask("CrossingSubtask", "CrossingSubtask description", Duration.ofMinutes(15), tm.getAllSubtasks().get(3).getEpic());
-        crossingSubtask.setStartTime(tm.getAllSubtasks().get(3).getStartTime());
+        Subtask crossingSubtask = new Subtask("CrossingSubtask", "CrossingSubtask description", tm.getAllSubtasks().get(3).getStartTime(), Duration.ofMinutes(15), tm.getAllSubtasks().get(3).getEpic());
         Assertions.assertThrows(TaskValidationException.class, () -> tm.createSubtask(crossingSubtask));
     }
 

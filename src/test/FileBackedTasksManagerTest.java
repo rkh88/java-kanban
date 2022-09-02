@@ -11,6 +11,7 @@ import tasks.Task;
 
 import java.io.File;
 import java.time.Duration;
+import java.time.LocalDateTime;
 
 class FileBackedTasksManagerTest { //у меня абсолютно все тесты успешно отрабатывают. Прошу дать более подробные комментарии
 
@@ -23,9 +24,9 @@ class FileBackedTasksManagerTest { //у меня абсолютно все те�
         file.delete();
         file = new File("history.csv");
         fb1 = new FileBackedTasksManager(file);
-        Task task = new Task("Task 1", "description Task 1", Duration.ofMinutes(30));
+        Task task = new Task("Task 1", "description Task 1", LocalDateTime.now(), Duration.ofMinutes(30));
         Epic epic = new Epic("Epic 1", "description Epic 1");
-        Subtask subtask = new Subtask("Subtask 1", "description Subtask 1", Duration.ofMinutes(15), epic);
+        Subtask subtask = new Subtask("Subtask 1", "description Subtask 1", LocalDateTime.now().plusMinutes(10), Duration.ofMinutes(15), epic);
         fb1.createTask(task);
         fb1.createEpic(epic);
         fb1.createSubtask(subtask);

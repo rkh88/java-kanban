@@ -8,7 +8,15 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="eda3f596-62fb-4868-984f-0d3a19dc0d25" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/history.csv" beforeDir="false" afterPath="$PROJECT_DIR$/history.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/tasks/Subtask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/tasks/Subtask.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/tasks/Task.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/tasks/Task.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/EpicTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/EpicTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/FileBackedTasksManagerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/FileBackedTasksManagerTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/InMemoryHistoryManagerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/InMemoryHistoryManagerTest.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/test/InMemoryTaskManagerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/InMemoryTaskManagerTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/TaskManagerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/TaskManagerTest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -78,7 +86,7 @@
     </option>
   </component>
   <component name="RunManager" selected="JUnit.test in my-app">
-    <configuration name="FileBackedTasksManagerTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="EpicTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="my-app" />
       <extension name="coverage">
         <pattern>
@@ -87,7 +95,7 @@
         </pattern>
       </extension>
       <option name="PACKAGE_NAME" value="test" />
-      <option name="MAIN_CLASS_NAME" value="test.FileBackedTasksManagerTest" />
+      <option name="MAIN_CLASS_NAME" value="test.EpicTest" />
       <option name="TEST_OBJECT" value="class" />
       <method v="2">
         <option name="Make" enabled="true" />
@@ -109,7 +117,7 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="InMemoryTaskManagerTest.subtaskCrossingTimeCheck" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="InMemoryTaskManagerTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="my-app" />
       <extension name="coverage">
         <pattern>
@@ -119,13 +127,12 @@
       </extension>
       <option name="PACKAGE_NAME" value="test" />
       <option name="MAIN_CLASS_NAME" value="test.InMemoryTaskManagerTest" />
-      <option name="METHOD_NAME" value="subtaskCrossingTimeCheck" />
-      <option name="TEST_OBJECT" value="method" />
+      <option name="TEST_OBJECT" value="class" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="InMemoryTaskManagerTest.taskCrossingTimeCheck" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="InMemoryTaskManagerTest.prioritizedTasksCheck" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="my-app" />
       <extension name="coverage">
         <pattern>
@@ -135,7 +142,7 @@
       </extension>
       <option name="PACKAGE_NAME" value="test" />
       <option name="MAIN_CLASS_NAME" value="test.InMemoryTaskManagerTest" />
-      <option name="METHOD_NAME" value="taskCrossingTimeCheck" />
+      <option name="METHOD_NAME" value="prioritizedTasksCheck" />
       <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
@@ -158,10 +165,10 @@
     <recent_temporary>
       <list>
         <item itemvalue="JUnit.test in my-app" />
+        <item itemvalue="JUnit.EpicTest" />
+        <item itemvalue="JUnit.InMemoryTaskManagerTest.prioritizedTasksCheck" />
+        <item itemvalue="JUnit.InMemoryTaskManagerTest" />
         <item itemvalue="JUnit.FileBackedTasksManagerTest.historyNotNull" />
-        <item itemvalue="JUnit.FileBackedTasksManagerTest" />
-        <item itemvalue="JUnit.InMemoryTaskManagerTest.subtaskCrossingTimeCheck" />
-        <item itemvalue="JUnit.InMemoryTaskManagerTest.taskCrossingTimeCheck" />
       </list>
     </recent_temporary>
   </component>
@@ -195,6 +202,11 @@
           <properties class="java.lang.NullPointerException" package="java.lang" />
           <option name="timeStamp" value="13" />
         </breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/tasks/Task.java</url>
+          <line>133</line>
+          <option name="timeStamp" value="16" />
+        </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
     <pin-to-top-manager>

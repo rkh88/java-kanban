@@ -7,6 +7,7 @@ import tasks.Subtask;
 import tasks.Task;
 
 import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.HashMap;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -21,11 +22,11 @@ public abstract class TaskManagerTest<T extends TaskManager> {
 
     protected void initTasks() {
         tm.setCounter(1);
-        task = new Task("TestTask", "TestTask description", Duration.ofMinutes(15));
+        task = new Task("TestTask", "TestTask description", LocalDateTime.now(), Duration.ofMinutes(15));
         tm.createTask(task);
         epic = new Epic("TestEpic", "TestEpic description");
         tm.createEpic(epic);
-        subtask = new Subtask("Test Subtask", "Test description", Duration.ofMinutes(30), epic);
+        subtask = new Subtask("Test Subtask", "Test description", LocalDateTime.now().plusMinutes(10), Duration.ofMinutes(30), epic);
         tm.createSubtask(subtask);
     }
 

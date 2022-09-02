@@ -14,6 +14,12 @@ public class Task implements Comparable<Task> {
     protected LocalDateTime startTime;
     protected LocalDateTime endTime;
 
+    public Task(String name, String description) {
+        this.name = name;
+        this.description = description;
+        this.status = Status.NEW;
+    }
+
     public void setDuration(Duration duration) {
         this.duration = duration;
     }
@@ -38,20 +44,20 @@ public class Task implements Comparable<Task> {
         return endTime;
     }
 
-    public Task(String name, String description, Duration duration) {
+    public Task(String name, String description, LocalDateTime startTime, Duration duration) {
         this.name = name;
         this.description = description;
         this.duration = duration;
         this.status = Status.NEW;
-        this.startTime = LocalDateTime.now();
+        this.startTime = startTime;
         this.endTime = startTime.plus(duration);
     }
 
-    public Task(String name, String description) {
+    public Task(String name, String description, LocalDateTime startTime) {
         this.name = name;
         this.description = description;
         this.status = Status.NEW;
-        this.startTime = LocalDateTime.now();
+        this.startTime = startTime;
     }
 
    public Task(int id, String name, Status status, String description, Duration duration, LocalDateTime startTime, LocalDateTime endTime) {
@@ -125,10 +131,10 @@ public class Task implements Comparable<Task> {
         } else if(o.getStartTime() != null && this.getStartTime() == null) {
             return 1;
         } else {
-        if(this.getStartTime().isBefore(o.getStartTime())) {
+        if(o.getStartTime() != null && this.getStartTime() != null && this.getStartTime().isBefore(o.getStartTime())) {
             return -1;
         }
-        if(this.getStartTime().isEqual(o.getStartTime())) {
+        if(o.getStartTime() != null && this.getStartTime() != null && this.getStartTime().isEqual(o.getStartTime())) {
             return 0;
             }
         }
