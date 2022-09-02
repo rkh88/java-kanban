@@ -44,7 +44,7 @@ public class InMemoryTaskManagerTest extends TaskManagerTest<InMemoryTaskManager
     public void taskCrossingTimeCheck() {
         Task crossingTask = new Task("CrossingTask", "CrossingTask description", Duration.ofMinutes(15));
         crossingTask.setStartTime(tm.getAllTasks().get(1).getStartTime());
-        Assertions.assertThrows(TaskValidationException.class, () -> tm.createTask(crossingTask));
+        Assertions.assertThrows(TaskValidationException.class, () -> tm.createTask(crossingTask));//Это что? Не проверка на исключение разве?
     }
 
     @Test
