@@ -2,6 +2,7 @@ package test;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import service.FileBackedTasksManager;
 import tasks.Epic;
@@ -11,14 +12,17 @@ import tasks.Task;
 import java.io.File;
 import java.time.Duration;
 
-class FileBackedTasksManagerTest {
+class FileBackedTasksManagerTest { //у меня абсолютно все тесты успешно отрабатывают. Прошу дать более подробные комментарии
 
-    private static final File file = new File("history.csv");
-    private static final FileBackedTasksManager fb1 = new FileBackedTasksManager(file);
+    private static File file = new File("history.csv");
+    private static FileBackedTasksManager fb1;
     private static FileBackedTasksManager fb2;
 
-    @BeforeAll
-    static void setUp() {
+    @BeforeEach
+    public void setUp() {
+        file.delete();
+        file = new File("history.csv");
+        fb1 = new FileBackedTasksManager(file);
         Task task = new Task("Task 1", "description Task 1", Duration.ofMinutes(30));
         Epic epic = new Epic("Epic 1", "description Epic 1");
         Subtask subtask = new Subtask("Subtask 1", "description Subtask 1", Duration.ofMinutes(15), epic);
