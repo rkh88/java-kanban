@@ -20,6 +20,9 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
         this.file = file;
     }
 
+    public FileBackedTasksManager() {
+    }
+
     @Override
     public Task createTask(Task task) {
         super.createTask(task);
