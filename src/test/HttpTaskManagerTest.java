@@ -1,10 +1,10 @@
 package test;
 
+import http.HttpTaskManager;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import http.HttpTaskManager;
 import server.KVServer;
 import service.Managers;
 import tasks.Epic;
@@ -15,7 +15,8 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 class HttpTaskManagerTest extends TaskManagerTest<HttpTaskManager> {
 
