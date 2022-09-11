@@ -8,15 +8,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="eda3f596-62fb-4868-984f-0d3a19dc0d25" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/src/test/HttpTaskServerTest.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/http/HttpTaskServer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/http/HttpTaskServer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/server/KVServer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/server/KVServer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/service/FileBackedTasksManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/service/FileBackedTasksManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/service/Managers.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/service/Managers.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/service/TaskValidationException.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/service/TaskValidationException.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/FileBackedTasksManagerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/FileBackedTasksManagerTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/HttpTaskManagerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/HttpTaskManagerTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/InMemoryTaskManagerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/InMemoryTaskManagerTest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -81,6 +74,7 @@
       <recent name="$PROJECT_DIR$" />
     </key>
     <key name="CreateTestDialog.RecentsKey">
+      <recent name="http" />
       <recent name="service" />
       <recent name="tasks" />
     </key>
@@ -90,7 +84,20 @@
       <command value="mvn clean package" />
     </option>
   </component>
-  <component name="RunManager" selected="JUnit.test in my-app">
+  <component name="RunManager" selected="Application.KVServer">
+    <configuration name="KVServer" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="server.KVServer" />
+      <module name="my-app" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="server.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="EpicTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="my-app" />
       <extension name="coverage">
@@ -102,22 +109,6 @@
       <option name="PACKAGE_NAME" value="test" />
       <option name="MAIN_CLASS_NAME" value="test.EpicTest" />
       <option name="TEST_OBJECT" value="class" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="FileBackedTasksManagerTest.historyNotNull" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="my-app" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="test.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="test" />
-      <option name="MAIN_CLASS_NAME" value="test.FileBackedTasksManagerTest" />
-      <option name="METHOD_NAME" value="historyNotNull" />
-      <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -169,11 +160,11 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Application.KVServer" />
         <item itemvalue="JUnit.test in my-app" />
         <item itemvalue="JUnit.EpicTest" />
         <item itemvalue="JUnit.InMemoryTaskManagerTest.prioritizedTasksCheck" />
         <item itemvalue="JUnit.InMemoryTaskManagerTest" />
-        <item itemvalue="JUnit.FileBackedTasksManagerTest.historyNotNull" />
       </list>
     </recent_temporary>
   </component>
