@@ -3,7 +3,7 @@ package server;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpServer;
 
-import java.io.IOException;
+import java.io.*;
 import java.net.InetSocketAddress;
 import java.util.HashMap;
 import java.util.Map;
@@ -85,7 +85,7 @@ public class KVServer {
 		server.start();
 	}
 
-	private String generateApiToken() {
+	public static String generateApiToken() {
 		return "" + System.currentTimeMillis();
 	}
 
@@ -107,13 +107,5 @@ public class KVServer {
 
 	public void stop() {
 		stop();
-	}
-
-	public static void main(String[] args) {
-		try {
-			new KVServer().start();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
 	}
 }

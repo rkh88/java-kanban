@@ -9,8 +9,12 @@ import tasks.Epic;
 import tasks.Subtask;
 import tasks.Task;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.net.InetSocketAddress;
+import java.net.URI;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
@@ -35,9 +39,9 @@ public class HttpTaskServer {
 
     public void start() {
         System.out.println("Started TaskServer " + PORT);
-        System.out.println("http://localhost:" + PORT + "/tasks");
-        System.out.println("http://localhost:" + PORT + "/tasks/subtasks");
-        System.out.println("http://localhost:" + PORT + "/tasks/epics");
+        System.out.println("http://localhost:" + PORT + "/tasks/task");
+        System.out.println("http://localhost:" + PORT + "/tasks/subtask");
+        System.out.println("http://localhost:" + PORT + "/tasks/epic");
         System.out.println("http://localhost:" + PORT + "/tasks/history");
         server.start();
     }
@@ -75,14 +79,14 @@ public class HttpTaskServer {
                 }
             case "POST":
                 String json = readText(httpExchange);
-                if(json.isEmpty()) {
+                if (json.isEmpty()) {
                     System.out.println("Тело запроса пусто");
                     httpExchange.sendResponseHeaders(400, 0);
                     return;
                 }
                 final Task taskToPost = gson.fromJson(json, Task.class);
                 final Integer idToPost = taskToPost.getId();
-                if(idToPost != null) {
+                if (idToPost != null) {
                     taskManager.updateTask(taskToPost);
                     System.out.println("Обновили задачу с id = " + idToPost);
                     httpExchange.sendResponseHeaders(200, 0);
@@ -128,14 +132,14 @@ public class HttpTaskServer {
                 }
             case "POST":
                 String json = readText(httpExchange);
-                if(json.isEmpty()) {
+                if (json.isEmpty()) {
                     System.out.println("Тело запроса пусто");
                     httpExchange.sendResponseHeaders(400, 0);
                     return;
                 }
                 final Subtask subtaskToPost = gson.fromJson(json, Subtask.class);
                 final Integer idToPost = subtaskToPost.getId();
-                if(idToPost != null) {
+                if (idToPost != null) {
                     taskManager.updateSubtask(subtaskToPost);
                     System.out.println("Обновили подзадачу с id = " + idToPost);
                     httpExchange.sendResponseHeaders(200, 0);
@@ -179,14 +183,14 @@ public class HttpTaskServer {
                 }
             case "POST":
                 String json = readText(httpExchange);
-                if(json.isEmpty()) {
+                if (json.isEmpty()) {
                     System.out.println("Тело запроса пусто");
                     httpExchange.sendResponseHeaders(400, 0);
                     return;
                 }
                 final Epic epicToPost = gson.fromJson(json, Epic.class);
                 final Integer idToPost = epicToPost.getId();
-                if(idToPost != null) {
+                if (idToPost != null) {
                     taskManager.updateEpic(epicToPost);
                     System.out.println("Обновили эпик с id = " + idToPost);
                     httpExchange.sendResponseHeaders(200, 0);
@@ -202,19 +206,47 @@ public class HttpTaskServer {
         }
     }
 
-    public void HistoryHandler(HttpExchange httpExchange) {
-
-    }
-
-
-
-    private String readText(HttpExchange httpExchange) {
-        String text = "";
-
-        return text;
-    }
-
-    private void sendText (HttpExchange httpExchange, String response){
+    public void HistoryHandler(HttpExchange httpExchange) throws IOException {
+        String method = httpExchange.getRequestMethod();
+        URI responseURI = httpExchange.getRequestURI();
+        String path = responseURI.getPath();
+        String[] splitStrings = path.split("/");
+        if (path.endsWith("/history")) {
+            String historyJson = gson.toJson(taskManager.getHistoryManager().getHistory());
+            httpExchange.sendResponseHeaders(200, 0);
+            try (OutputStream os = httpExchange.getResponseBody()) {
+                os.write(historyJson.getBytes());
             }
+        } else if (path.endsWith("/tasks")) {
+            String prTasksJson = gson.toJson(taskManager.getPrioritizedTasks());
+            httpExchange.sendResponseHeaders(200, 0);
+            try (OutputStream os = httpExchange.getResponseBody()) {
+                os.write(prTasksJson.getBytes(StandardCharsets.UTF_8));
+            }
+            httpExchange.close();
+        } else {
+            httpExchange.sendResponseHeaders(404, 0);
+            httpExchange.close();
+        }
+    }
 
+
+    private String readText(HttpExchange httpExchange) throws IOException {
+        InputStream is = httpExchange.getRequestBody();
+        ByteArrayOutputStream result = new ByteArrayOutputStream();
+        byte[] buffer = new byte[1024];
+        for (int length; (length = is.read(buffer)) != -1; ) {
+            result.write(buffer, 0, length);
+        }
+        return result.toString("UTF-8");
+    }
+
+    private void sendText(HttpExchange httpExchange, String response) throws IOException {
+        String responseJson = gson.toJson(response);
+        httpExchange.sendResponseHeaders(200, 0);
+        try (OutputStream os = httpExchange.getResponseBody()) {
+            os.write(responseJson.getBytes(StandardCharsets.UTF_8));
+        }
+        httpExchange.close();
+    }
 }
