@@ -1,6 +1,5 @@
 package http;
 
-import server.KVServer;
 import service.ManagerSaveException;
 
 import java.io.IOException;
@@ -9,15 +8,19 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 
+import static server.KVServer.generateApiToken;
+
 public class KVTaskClient {
     int port;
     private String url;
+    private final String apiToken;
 
     public KVTaskClient(int port) {
-        this.port = port;
+        url = "http://localhost:" + port + "/";
+        apiToken = register(url);
     }
 
-    private String register(String url) {
+    private static String register(String url) {
         try {
             HttpClient client = HttpClient.newHttpClient();
             HttpResponse.BodyHandler<String> handler = HttpResponse.BodyHandlers.ofString();
@@ -39,7 +42,7 @@ public class KVTaskClient {
         try {
             HttpClient client = HttpClient.newHttpClient();
             HttpResponse.BodyHandler<String> handler = HttpResponse.BodyHandlers.ofString();
-            String apiToken = KVServer.generateApiToken();
+            String apiToken = generateApiToken();
             HttpRequest request = HttpRequest.newBuilder()
                     .uri(URI.create(url + "load/" + key + "?API_TOKEN=" + apiToken))
                     .GET()
@@ -58,7 +61,6 @@ public class KVTaskClient {
     public void put(String key, String jsonTasks) {
         try {
             HttpClient client = HttpClient.newHttpClient();
-            String apiToken = KVServer.generateApiToken();
             HttpRequest request = HttpRequest.newBuilder()
                     .uri(URI.create(url + "save/" + key + "?API_TOKEN=" + apiToken))
                     .POST(HttpRequest.BodyPublishers.ofString(jsonTasks))

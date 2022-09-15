@@ -37,6 +37,10 @@ public class HttpTaskServer {
         server.createContext("/tasks/history", this::HistoryHandler);
     }
 
+    public HttpTaskServer() throws IOException {
+        this(Managers.getDefault());
+    }
+
     public void start() {
         System.out.println("Started TaskServer " + PORT);
         System.out.println("http://localhost:" + PORT + "/tasks/task");

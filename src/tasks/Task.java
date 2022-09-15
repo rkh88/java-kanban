@@ -13,11 +13,44 @@ public class Task implements Comparable<Task> {
     protected Duration duration;
     protected LocalDateTime startTime;
     protected LocalDateTime endTime;
+    protected User user;
+
+    public Task(String name, String description, int id, Status status, Duration duration, LocalDateTime startTime, LocalDateTime endTime, User user) {
+        this.name = name;
+        this.description = description;
+        this.id = id;
+        this.status = status;
+        this.duration = duration;
+        this.startTime = startTime;
+        this.endTime = endTime;
+        this.user = user;
+    }
+
+    public Task(String name, String description, Status status, Duration duration, LocalDateTime startTime, LocalDateTime endTime, User user) {
+        this.name = name;
+        this.description = description;
+        this.status = status;
+        this.duration = duration;
+        this.startTime = startTime;
+        this.endTime = endTime;
+        this.user = user;
+    }
 
     public Task(String name, String description) {
         this.name = name;
         this.description = description;
         this.status = Status.NEW;
+    }
+
+    public Task(Task task) {
+        this.id = task.getId();
+        this.name = task.getName();
+        this.description = task.getDescription();
+        this.status = task.getStatus();
+        this.duration = task.getDuration();
+        this.startTime = task.getStartTime();
+        this.endTime = task.getEndTime();
+        this.user = task.getUser();
     }
 
     public void setDuration(Duration duration) {
@@ -141,4 +174,11 @@ public class Task implements Comparable<Task> {
         return 1;
     }
 
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
 }

@@ -21,7 +21,7 @@ public class HttpTaskManager extends FileBackedTasksManager {
     }
 
     public HttpTaskManager(int port, boolean load) {
-        this.client = new KVTaskClient(port);
+        this.client = new KVTaskClient(port, "http://localhost:" + port + "/tasks/task");
         gson = Managers.getGson();
         if (load) {
             load();
