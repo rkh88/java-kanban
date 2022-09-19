@@ -15,7 +15,7 @@ public class KVTaskClient {
     private String url;
     private final String apiToken;
 
-    public KVTaskClient(int port) {
+    public KVTaskClient(int port, String s) {
         url = "http://localhost:" + port + "/";
         apiToken = register(url);
     }
@@ -33,12 +33,12 @@ public class KVTaskClient {
                 throw new ManagerSaveException("Не удалось" + response.statusCode());
             }
             return response.body();
-        } catch (ManagerSaveException | InterruptedException | IOException e) {
+        } catch (InterruptedException | IOException e) {
             throw new RuntimeException("Не удалось");
         }
     }
 
-    public String load(String key) throws ManagerSaveException {
+    public String load(String key) {
         try {
             HttpClient client = HttpClient.newHttpClient();
             HttpResponse.BodyHandler<String> handler = HttpResponse.BodyHandlers.ofString();
@@ -53,7 +53,7 @@ public class KVTaskClient {
                 throw new ManagerSaveException("Не удалось" + response.statusCode());
             }
             return response.body();
-        } catch (ManagerSaveException | InterruptedException | IOException e) {
+        } catch (InterruptedException | IOException e) {
             throw new RuntimeException(e);
         }
     }
@@ -69,7 +69,7 @@ public class KVTaskClient {
             if (response.statusCode() != 200) {
                 throw new ManagerSaveException("Не удалось :(" + response.statusCode());
             }
-        } catch (ManagerSaveException | InterruptedException | IOException e) {
+        } catch (InterruptedException | IOException e) {
             throw new RuntimeException(e);
         }
     }
